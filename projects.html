@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clément Dalmas — Projects</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --accent: rgba(100,170,255,0.9);
+  --green:  rgba(0,220,100,0.85);
+}
+html { scroll-behavior:smooth; }
+body { background:#000; font-family:'Inter',sans-serif; color:#fff; overflow-x:hidden; }
+
+/* ── NAV ── */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:200;
+  display:flex; align-items:center; justify-content:center;
+  height:64px; background:transparent;
+  transition:background .4s;
+}
+nav.scrolled { background:rgba(0,0,0,0.65); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); }
+.nav-links { display:flex; align-items:center; gap:36px; list-style:none; }
+.nav-links a {
+  font-size:11px; font-weight:500; letter-spacing:.18em; text-transform:uppercase;
+  color:rgba(255,255,255,.72); text-decoration:none;
+  transition:color .25s; position:relative; padding-bottom:3px;
+}
+.nav-links a::after { content:''; position:absolute; bottom:0; left:0; width:0; height:1px; background:var(--accent); transition:width .3s; }
+.nav-links a:hover, .nav-links a.active { color:#fff; }
+.nav-links a:hover::after, .nav-links a.active::after { width:100%; }
+.nav-sep { color:rgba(255,255,255,.2); font-size:13px; user-select:none; }
+.nav-logo-item { font-weight:700!important; letter-spacing:.28em!important; font-size:12px!important; color:rgba(255,255,255,.95)!important; }
+.nav-logo-item::after { display:none!important; }
+
+/* ── HERO ── */
+#hero {
+  position:relative; width:100%; height:100vh;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+}
+#hero-canvas { position:absolute; inset:0; width:100%; height:100%; }
+.hero-overlay {
+  position:absolute; inset:0;
+  background:linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.1) 60%, transparent 100%);
+}
+.hero-text { position:relative; z-index:2; text-align:center; padding:0 40px; }
+.hero-text .overline {
+  font-size:10px; font-weight:500; letter-spacing:.28em; text-transform:uppercase;
+  color:var(--accent); margin-bottom:18px;
+}
+.hero-text h1 {
+  font-size:clamp(52px,7.5vw,108px); font-weight:700;
+  line-height:1.0; letter-spacing:-2px; text-transform:uppercase; margin-bottom:28px;
+}
+.hero-text p {
+  font-size:14px; font-weight:300; line-height:1.8;
+  color:rgba(255,255,255,.58); max-width:500px; margin:0 auto;
+}
+.scroll-hint {
+  position:absolute; bottom:36px; left:50%; transform:translateX(-50%);
+  z-index:2; display:flex; flex-direction:column; align-items:center; gap:8px;
+  animation:bounce 2s ease-in-out infinite;
+}
+.scroll-hint span { font-size:9px; letter-spacing:.22em; text-transform:uppercase; color:rgba(255,255,255,.3); }
+@keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+
+/* ── DIVIDER ── */
+.divider { width:100%; height:1px; background:rgba(255,255,255,.06); }
+
+/* ══════════════════════════════════
+   PROJECT PANELS — SpaceX Moon style
+   Full-screen split: visual | text
+══════════════════════════════════ */
+.xp-panel {
+  position:relative; width:100%; min-height:100vh;
+  display:grid; grid-template-columns:1fr 1fr;
+  overflow:hidden;
+}
+.xp-panel.reverse { direction:rtl; }
+.xp-panel.reverse > * { direction:ltr; }
+
+.xp-visual {
+  position:relative; overflow:hidden; background:#050505;
+}
+.xp-visual svg { width:100%; height:100%; position:absolute; inset:0; }
+
+.xp-text {
+  display:flex; flex-direction:column; justify-content:center;
+  padding:100px 72px; background:#000;
+  border-left:1px solid rgba(255,255,255,.05);
+}
+.xp-panel.reverse .xp-text { border-left:none; border-right:1px solid rgba(255,255,255,.05); }
+
+.xp-index { font-size:10px; font-weight:500; letter-spacing:.3em; color:rgba(255,255,255,.18); margin-bottom:6px; }
+.xp-overline { font-size:10px; font-weight:500; letter-spacing:.26em; text-transform:uppercase; color:var(--accent); margin-bottom:20px; }
+.xp-title {
+  font-size:clamp(28px,3.2vw,44px); font-weight:700;
+  line-height:1.05; letter-spacing:-1px; text-transform:uppercase; margin-bottom:32px;
+}
+.xp-body {
+  font-size:14px; font-weight:300; line-height:1.85;
+  color:rgba(255,255,255,.58); margin-bottom:36px;
+}
+.xp-body strong { color:rgba(255,255,255,.88); font-weight:500; }
+
+/* stat pills */
+.xp-stats { display:flex; gap:24px; margin-bottom:36px; flex-wrap:wrap; }
+.stat {
+  display:flex; flex-direction:column; gap:4px;
+  padding:16px 22px; border:1px solid rgba(255,255,255,.08);
+  min-width:90px;
+}
+.stat-val { font-size:22px; font-weight:700; letter-spacing:-0.5px; color:#fff; }
+.stat-lbl { font-size:9px; font-weight:500; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.3); }
+
+/* skill tags */
+.xp-tags { display:flex; flex-wrap:wrap; gap:8px; }
+.xp-tag {
+  font-size:9px; font-weight:500; letter-spacing:.16em; text-transform:uppercase;
+  color:rgba(255,255,255,.4); border:1px solid rgba(255,255,255,.1); padding:5px 12px;
+}
+
+/* ── CTA ── */
+#cta {
+  min-height:50vh; display:flex; align-items:center; justify-content:center;
+  text-align:center; padding:120px 64px; background:#000;
+}
+.cta-inner { max-width:640px; }
+.cta-inner .overline { font-size:10px; font-weight:500; letter-spacing:.28em; text-transform:uppercase; color:var(--accent); margin-bottom:14px; }
+.cta-inner h2 { font-size:clamp(32px,5vw,64px); font-weight:700; letter-spacing:-1.5px; text-transform:uppercase; margin-bottom:32px; }
+.cta-inner p { font-size:15px; font-weight:300; line-height:1.8; color:rgba(255,255,255,.5); margin-bottom:48px; }
+.cta-btn {
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:11px; font-weight:600; letter-spacing:.22em; text-transform:uppercase;
+  color:#fff; background:transparent; border:1px solid rgba(255,255,255,.35);
+  padding:14px 28px; text-decoration:none;
+  transition:border-color .3s, color .3s; position:relative; overflow:hidden;
+}
+.cta-btn::before { content:''; position:absolute; inset:0; background:rgba(255,255,255,.05); opacity:0; transition:opacity .3s; }
+.cta-btn:hover { border-color:rgba(100,170,255,.7); color:rgba(140,195,255,1); }
+.cta-btn:hover::before { opacity:1; }
+.cta-arrow { font-size:14px; transition:transform .3s; }
+.cta-btn:hover .cta-arrow { transform:translateX(5px); }
+
+/* footer */
+footer { padding:48px 64px; border-top:1px solid rgba(255,255,255,.07); display:flex; justify-content:space-between; align-items:center; }
+footer span { font-size:11px; letter-spacing:.15em; color:rgba(255,255,255,.22); text-transform:uppercase; }
+
+/* reveal */
+.reveal { opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav id="navbar">
+  <ul class="nav-links">
+    <li><a href="index3-5.html" class="nav-logo-item">CLÉMENT D</a></li>
+    <li class="nav-sep">·</li>
+    <li><a href="index.html">Portfolio</a></li>
+    <li><a href="#pihole" class="active">Pi-hole</a></li>
+    <li><a href="#network">Network</a></li>
+    <li><a href="#youtube">YouTube</a></li>
+    <li><a href="#ai">AI</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════════════════════════════ HERO ══════════════════════════════════ -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-overlay"></div>
+  <div class="hero-text">
+    <p class="overline">Personal Projects</p>
+    <h1>BUILD.<br>BREAK.<br>LEARN.</h1>
+    <p>Four projects. Zero clients. Pure curiosity — every one started with a problem worth solving and ended with something that actually works.</p>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <svg width="14" height="20" viewBox="0 0 14 20" fill="none">
+      <path d="M7 0v16M1 10l6 7 6-7" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+    </svg>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════
+     01 — PI-HOLE
+══════════════════════════════════ -->
+<div class="xp-panel" id="pihole">
+
+  <div class="xp-visual">
+    <svg viewBox="0 0 600 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <radialGradient id="piAmb" cx="50%" cy="48%" r="52%">
+          <stop offset="0%" stop-color="rgba(220,40,40,0.14)"/>
+          <stop offset="100%" stop-color="transparent"/>
+        </radialGradient>
+        <radialGradient id="piGreen" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="rgba(0,220,100,0.2)"/>
+          <stop offset="100%" stop-color="transparent"/>
+        </radialGradient>
+      </defs>
+      <rect width="600" height="900" fill="#030303"/>
+      <rect width="600" height="900" fill="url(#piAmb)"/>
+
+      <!-- Stars -->
+      <circle cx="55"  cy="72"  r=".6" fill="rgba(255,255,255,.32)"/>
+      <circle cx="180" cy="40"  r=".5" fill="rgba(255,255,255,.25)"/>
+      <circle cx="420" cy="90"  r=".6" fill="rgba(255,255,255,.30)"/>
+      <circle cx="540" cy="55"  r=".5" fill="rgba(255,255,255,.22)"/>
+      <circle cx="70"  cy="800" r=".5" fill="rgba(255,255,255,.18)"/>
+      <circle cx="520" cy="840" r=".6" fill="rgba(255,255,255,.20)"/>
+
+      <!-- ── Network flow diagram ── -->
+      <!-- Internet cloud -->
+      <g transform="translate(230,80)">
+        <path d="M70,50 Q50,20 80,15 Q85,-5 110,5 Q125,-10 145,10 Q170,5 165,30 Q185,35 175,55 Q170,72 150,68 Q140,82 120,75 Q100,88 80,75 Q55,82 50,65 Q30,60 35,45 Q30,30 50,30 Q50,20 70,20Z"
+              fill="#0a0a10" stroke="rgba(255,255,255,.12)" stroke-width="1.2"/>
+        <text x="105" y="46" text-anchor="middle" font-family="monospace" font-size="9" fill="rgba(255,255,255,.4)" letter-spacing=".1em">INTERNET</text>
+      </g>
+
+      <!-- Arrow down to router -->
+      <line x1="300" y1="162" x2="300" y2="220" stroke="rgba(255,255,255,.2)" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <polygon points="294,218 300,232 306,218" fill="rgba(255,255,255,.25)"/>
+
+      <!-- Router box -->
+      <rect x="230" y="232" width="140" height="46" rx="4" fill="#0a0a12" stroke="rgba(80,120,255,0.45)" stroke-width="1.2"/>
+      <text x="300" y="251" text-anchor="middle" font-family="monospace" font-size="9" fill="rgba(80,150,255,.9)" letter-spacing=".1em">ROUTER</text>
+      <text x="300" y="265" text-anchor="middle" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.3)">192.168.1.1</text>
+      <circle cx="358" cy="248" r="2.5" fill="#28c840"><animate attributeName="opacity" values="1;.2;1" dur="2s" repeatCount="indefinite"/></circle>
+
+      <!-- DNS arrow down to Pi-hole -->
+      <line x1="300" y1="278" x2="300" y2="340" stroke="rgba(220,40,40,.5)" stroke-width="2" stroke-dasharray="5 3"/>
+      <text x="312" y="315" font-family="monospace" font-size="8" fill="rgba(220,40,40,.65)">DNS queries</text>
+      <polygon points="294,338 300,352 306,338" fill="rgba(220,40,40,.6)"/>
+
+      <!-- Pi-hole node (RPi) -->
+      <rect x="215" y="215" width="0" height="0"/>
+      <circle cx="300" cy="390" r="52" fill="#0d0d0d" stroke="rgba(220,40,40,0.55)" stroke-width="1.5"/>
+      <circle cx="300" cy="390" r="52" fill="url(#piGreen)" opacity=".5"/>
+      <!-- Pi logo hint -->
+      <text x="300" y="382" text-anchor="middle" font-family="monospace" font-size="22" font-weight="700" fill="rgba(220,40,40,.85)">π</text>
+      <text x="300" y="400" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(255,255,255,.5)" letter-spacing=".12em">Pi-hole</text>
+      <text x="300" y="413" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(255,255,255,.25)">192.168.1.42</text>
+      <!-- Pulse ring -->
+      <circle cx="300" cy="390" r="60" fill="none" stroke="rgba(220,40,40,0.2)" stroke-width="1">
+        <animate attributeName="r" values="55;70;55" dur="3s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values=".5;0;.5" dur="3s" repeatCount="indefinite"/>
+      </circle>
+
+      <!-- Blocked requests -->
+      <g>
+        <!-- Block left -->
+        <line x1="248" y1="390" x2="155" y2="340" stroke="rgba(255,60,60,.35)" stroke-width="1.2" stroke-dasharray="4 3"/>
+        <rect x="95" y="315" width="60" height="28" rx="3" fill="rgba(80,0,0,.5)" stroke="rgba(255,60,60,.3)" stroke-width="1"/>
+        <text x="125" y="326" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(255,100,100,.7)">Ads</text>
+        <text x="125" y="337" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(255,80,80,.5)">BLOCKED</text>
+        <text x="195" y="345" font-family="monospace" font-size="14" fill="rgba(255,60,60,.7)">✕</text>
+
+        <!-- Block right -->
+        <line x1="352" y1="390" x2="445" y2="340" stroke="rgba(255,60,60,.35)" stroke-width="1.2" stroke-dasharray="4 3"/>
+        <rect x="445" y="315" width="70" height="28" rx="3" fill="rgba(80,0,0,.5)" stroke="rgba(255,60,60,.3)" stroke-width="1"/>
+        <text x="480" y="326" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(255,100,100,.7)">Trackers</text>
+        <text x="480" y="337" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(255,80,80,.5)">BLOCKED</text>
+        <text x="432" y="345" font-family="monospace" font-size="14" fill="rgba(255,60,60,.7)">✕</text>
+
+        <!-- Block bottom -->
+        <line x1="300" y1="442" x2="300" y2="500" stroke="rgba(255,60,60,.3)" stroke-width="1.2" stroke-dasharray="4 3"/>
+        <rect x="245" y="500" width="110" height="28" rx="3" fill="rgba(80,0,0,.5)" stroke="rgba(255,60,60,.25)" stroke-width="1"/>
+        <text x="300" y="511" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(255,100,100,.7)">Malicious domains</text>
+        <text x="300" y="522" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(255,80,80,.5)">BLOCKED</text>
+      </g>
+
+      <!-- Allowed traffic arrow -->
+      <line x1="300" y1="442" x2="300" y2="580" stroke="rgba(0,220,100,.4)" stroke-width="1.8"/>
+      <polygon points="294,578 300,592 306,578" fill="rgba(0,220,100,.5)"/>
+      <text x="312" y="525" font-family="monospace" font-size="8" fill="rgba(0,220,100,.6)">clean DNS</text>
+
+      <!-- Devices grid (allowed) -->
+      <g>
+        <rect x="130" y="595" width="64" height="36" rx="3" fill="#080808" stroke="rgba(0,220,100,.25)" stroke-width="1"/>
+        <text x="162" y="609" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(255,255,255,.45)">MacBook</text>
+        <text x="162" y="621" text-anchor="middle" font-family="monospace" font-size="6.5" fill="rgba(0,220,100,.5)">.1.10</text>
+
+        <rect x="218" y="595" width="64" height="36" rx="3" fill="#080808" stroke="rgba(0,220,100,.25)" stroke-width="1"/>
+        <text x="250" y="609" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(255,255,255,.45)">iPhone</text>
+        <text x="250" y="621" text-anchor="middle" font-family="monospace" font-size="6.5" fill="rgba(0,220,100,.5)">.1.15</text>
+
+        <rect x="306" y="595" width="64" height="36" rx="3" fill="#080808" stroke="rgba(0,220,100,.25)" stroke-width="1"/>
+        <text x="338" y="609" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(255,255,255,.45)">RPi 4</text>
+        <text x="338" y="621" text-anchor="middle" font-family="monospace" font-size="6.5" fill="rgba(0,220,100,.5)">.1.42</text>
+
+        <rect x="394" y="595" width="64" height="36" rx="3" fill="#080808" stroke="rgba(0,220,100,.25)" stroke-width="1"/>
+        <text x="426" y="609" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(255,255,255,.45)">TV</text>
+        <text x="426" y="621" text-anchor="middle" font-family="monospace" font-size="6.5" fill="rgba(0,220,100,.5)">.1.20</text>
+
+        <!-- Lines from pi to devices -->
+        <line x1="270" y1="592" x2="162" y2="595" stroke="rgba(0,220,100,.15)" stroke-width="1"/>
+        <line x1="285" y1="592" x2="250" y2="595" stroke="rgba(0,220,100,.15)" stroke-width="1"/>
+        <line x1="315" y1="592" x2="338" y2="595" stroke="rgba(0,220,100,.15)" stroke-width="1"/>
+        <line x1="330" y1="592" x2="426" y2="595" stroke="rgba(0,220,100,.15)" stroke-width="1"/>
+      </g>
+
+      <!-- Pi-hole stats widget -->
+      <rect x="80" y="666" width="440" height="140" rx="4" fill="rgba(0,0,0,.8)" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+      <text x="100" y="688" font-family="monospace" font-size="9" fill="rgba(220,40,40,.7)" letter-spacing=".12em">PI-HOLE DASHBOARD</text>
+      <line x1="80" y1="696" x2="520" y2="696" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+
+      <text x="100" y="716" font-family="monospace" font-size="8" fill="rgba(255,255,255,.3)">Queries today</text>
+      <text x="100" y="730" font-family="'Inter',sans-serif" font-size="18" font-weight="700" fill="rgba(255,255,255,.75)">14,832</text>
+
+      <text x="260" y="716" font-family="monospace" font-size="8" fill="rgba(255,255,255,.3)">Blocked</text>
+      <text x="260" y="730" font-family="'Inter',sans-serif" font-size="18" font-weight="700" fill="rgba(220,40,40,.8)">3,201</text>
+      <text x="260" y="744" font-family="monospace" font-size="7.5" fill="rgba(220,40,40,.5)">21.6%</text>
+
+      <text x="380" y="716" font-family="monospace" font-size="8" fill="rgba(255,255,255,.3)">Blocklists</text>
+      <text x="380" y="730" font-family="'Inter',sans-serif" font-size="18" font-weight="700" fill="rgba(0,220,100,.7)">148K</text>
+      <text x="380" y="744" font-family="monospace" font-size="7.5" fill="rgba(0,220,100,.4)">domains</text>
+
+      <!-- Mini bar chart -->
+      <text x="100" y="762" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.2)">Block rate (last 6h)</text>
+      <rect x="100" y="768" width="400" height="4" rx="2" fill="rgba(255,255,255,.06)"/>
+      <rect x="100" y="768" width="86"  height="4" rx="2" fill="rgba(220,40,40,.55)"/>
+
+      <text x="300" y="800" text-anchor="middle" font-family="'Inter',sans-serif" font-size="9" font-weight="600" fill="rgba(255,255,255,.05)" letter-spacing=".3em">RASPBERRY PI 4 · PIHOLE</text>
+    </svg>
+  </div>
+
+  <div class="xp-text">
+    <p class="xp-index">01</p>
+    <p class="xp-overline">Network Security</p>
+    <h2 class="xp-title">PI-HOLE<br>HOME DNS</h2>
+    <p class="xp-body">
+      Wanted <strong>full control over my DNS</strong> — no cloud dependency, no closed-source software, no cost. After testing Pi-hole on a VM in bridge mode, I ordered a Raspberry Pi and deployed it as the DNS resolver for my entire home network.<br><br>
+      Every device on the network routes its DNS queries through Pi-hole first. Ads, malicious trackers and suspicious domains are silently dropped before they ever reach a browser.
+    </p>
+    <div class="xp-stats">
+      <div class="stat"><span class="stat-val">21%</span><span class="stat-lbl">Blocked</span></div>
+      <div class="stat"><span class="stat-val">148K</span><span class="stat-lbl">Blocklist</span></div>
+      <div class="stat"><span class="stat-val">RPi 4</span><span class="stat-lbl">Hardware</span></div>
+    </div>
+    <div class="xp-tags">
+      <span class="xp-tag">Raspberry Pi</span>
+      <span class="xp-tag">Pi-hole</span>
+      <span class="xp-tag">DNS</span>
+      <span class="xp-tag">Linux</span>
+      <span class="xp-tag">Networking</span>
+      <span class="xp-tag">Self-hosted</span>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════
+     02 — HOME NETWORK INVENTORY
+══════════════════════════════════ -->
+<div class="xp-panel reverse" id="network">
+
+  <div class="xp-visual">
+    <svg viewBox="0 0 600 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <radialGradient id="netAmb" cx="48%" cy="45%" r="52%">
+          <stop offset="0%" stop-color="rgba(0,140,255,0.12)"/>
+          <stop offset="100%" stop-color="transparent"/>
+        </radialGradient>
+      </defs>
+      <rect width="600" height="900" fill="#030305"/>
+      <rect width="600" height="900" fill="url(#netAmb)"/>
+
+      <!-- Stars -->
+      <circle cx="50"  cy="65"  r=".6" fill="rgba(255,255,255,.3)"/>
+      <circle cx="530" cy="90"  r=".5" fill="rgba(255,255,255,.25)"/>
+      <circle cx="290" cy="40"  r=".6" fill="rgba(255,255,255,.28)"/>
+      <circle cx="80"  cy="820" r=".5" fill="rgba(255,255,255,.18)"/>
+      <circle cx="500" cy="790" r=".5" fill="rgba(255,255,255,.20)"/>
+
+      <!-- ── House floor plan (top-down) ── -->
+      <!-- Outer walls -->
+      <rect x="60" y="80" width="480" height="560" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2" rx="4"/>
+
+      <!-- Room: Living Room -->
+      <rect x="60"  y="80"  width="240" height="200" fill="rgba(255,255,255,.015)" stroke="rgba(255,255,255,.07)" stroke-width="1"/>
+      <text x="140" y="168" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(255,255,255,.2)" letter-spacing=".1em">LIVING ROOM</text>
+
+      <!-- Room: Office -->
+      <rect x="300" y="80" width="240" height="200" fill="rgba(0,120,255,.02)" stroke="rgba(0,120,255,.1)" stroke-width="1"/>
+      <text x="420" y="168" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(0,150,255,.3)" letter-spacing=".1em">OFFICE</text>
+
+      <!-- Room: Kitchen -->
+      <rect x="60"  y="280" width="160" height="180" fill="rgba(255,255,255,.01)" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+      <text x="140" y="368" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(255,255,255,.18)" letter-spacing=".1em">KITCHEN</text>
+
+      <!-- Room: Bedroom -->
+      <rect x="220" y="280" width="320" height="180" fill="rgba(255,255,255,.01)" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+      <text x="380" y="368" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(255,255,255,.18)" letter-spacing=".1em">BEDROOM</text>
+
+      <!-- Room: Hallway -->
+      <rect x="60"  y="460" width="480" height="180" fill="rgba(255,255,255,.008)" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+      <text x="300" y="555" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(255,255,255,.14)" letter-spacing=".1em">CORRIDOR</text>
+
+      <!-- RJ45 port markers (labelled wall sockets) -->
+      <!-- Living room -->
+      <rect x="75"  y="158" width="14" height="10" rx="1" fill="#0a1a10" stroke="rgba(0,220,80,.4)" stroke-width="1"/>
+      <text x="82"  y="166" text-anchor="middle" font-family="monospace" font-size="6" fill="rgba(0,220,80,.7)">J1</text>
+      <rect x="75"  y="176" width="14" height="10" rx="1" fill="#0a1a10" stroke="rgba(0,220,80,.35)" stroke-width="1"/>
+      <text x="82"  y="184" text-anchor="middle" font-family="monospace" font-size="6" fill="rgba(0,220,80,.6)">J2</text>
+
+      <!-- Office -->
+      <rect x="510" y="115" width="14" height="10" rx="1" fill="#0a1020" stroke="rgba(0,180,255,.5)" stroke-width="1"/>
+      <text x="517" y="123" text-anchor="middle" font-family="monospace" font-size="6" fill="rgba(0,180,255,.8)">J3</text>
+      <rect x="510" y="130" width="14" height="10" rx="1" fill="#0a1020" stroke="rgba(0,180,255,.45)" stroke-width="1"/>
+      <text x="517" y="138" text-anchor="middle" font-family="monospace" font-size="6" fill="rgba(0,180,255,.7)">J4</text>
+      <rect x="510" y="145" width="14" height="10" rx="1" fill="#0a1020" stroke="rgba(0,180,255,.4)" stroke-width="1"/>
+      <text x="517" y="153" text-anchor="middle" font-family="monospace" font-size="6" fill="rgba(0,180,255,.65)">J5</text>
+
+      <!-- Bedroom -->
+      <rect x="510" y="300" width="14" height="10" rx="1" fill="#0a1a10" stroke="rgba(0,220,80,.35)" stroke-width="1"/>
+      <text x="517" y="308" text-anchor="middle" font-family="monospace" font-size="6" fill="rgba(0,220,80,.6)">J6</text>
+      <rect x="510" y="316" width="14" height="10" rx="1" fill="#0a1a10" stroke="rgba(0,220,80,.3)" stroke-width="1"/>
+      <text x="517" y="324" text-anchor="middle" font-family="monospace" font-size="6" fill="rgba(0,220,80,.55)">J7</text>
+
+      <!-- Hallway (patch panel location) -->
+      <rect x="200" y="478" width="200" height="50" rx="3" fill="#080810" stroke="rgba(0,120,255,.3)" stroke-width="1.2"/>
+      <text x="300" y="496" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(0,150,255,.7)" letter-spacing=".1em">PATCH PANEL</text>
+      <!-- Port dots -->
+      <circle cx="220" cy="514" r="3.5" fill="#080810" stroke="rgba(0,180,255,.5)" stroke-width="1"/>
+      <circle cx="232" cy="514" r="3.5" fill="#080810" stroke="rgba(0,180,255,.45)" stroke-width="1"/>
+      <circle cx="244" cy="514" r="3.5" fill="#080810" stroke="rgba(0,180,255,.4)" stroke-width="1"/>
+      <circle cx="256" cy="514" r="3.5" fill="#080810" stroke="rgba(0,180,255,.4)" stroke-width="1"/>
+      <circle cx="268" cy="514" r="3.5" fill="#080810" stroke="rgba(0,180,255,.35)" stroke-width="1"/>
+      <circle cx="280" cy="514" r="3.5" fill="#080810" stroke="rgba(0,220,80,.5)" stroke-width="1"/>
+      <circle cx="292" cy="514" r="3.5" fill="#080810" stroke="rgba(0,220,80,.45)" stroke-width="1"/>
+      <circle cx="304" cy="514" r="3.5" fill="#080810" stroke="rgba(0,180,255,.35)" stroke-width="1"/>
+      <circle cx="316" cy="514" r="3.5" fill="#080810" stroke="rgba(0,180,255,.3)" stroke-width="1"/>
+      <circle cx="328" cy="514" r="3.5" fill="#080810" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+      <circle cx="340" cy="514" r="3.5" fill="#080810" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+      <circle cx="352" cy="514" r="3.5" fill="#080810" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
+      <!-- Port labels -->
+      <text x="220" y="524" text-anchor="middle" font-family="monospace" font-size="5.5" fill="rgba(0,180,255,.5)">J3</text>
+      <text x="232" y="524" text-anchor="middle" font-family="monospace" font-size="5.5" fill="rgba(0,180,255,.45)">J4</text>
+      <text x="244" y="524" text-anchor="middle" font-family="monospace" font-size="5.5" fill="rgba(0,180,255,.4)">J5</text>
+      <text x="280" y="524" text-anchor="middle" font-family="monospace" font-size="5.5" fill="rgba(0,220,80,.5)">J1</text>
+      <text x="292" y="524" text-anchor="middle" font-family="monospace" font-size="5.5" fill="rgba(0,220,80,.45)">J2</text>
+
+      <!-- Cables from ports to rooms (dashed) -->
+      <line x1="220" y1="478" x2="517" y2="158" stroke="rgba(0,150,255,.18)" stroke-width="1" stroke-dasharray="5 4"/>
+      <line x1="232" y1="478" x2="517" y2="140" stroke="rgba(0,150,255,.15)" stroke-width="1" stroke-dasharray="5 4"/>
+      <line x1="280" y1="478" x2="89"  y2="168" stroke="rgba(0,200,60,.18)" stroke-width="1" stroke-dasharray="5 4"/>
+      <line x1="292" y1="478" x2="89"  y2="186" stroke="rgba(0,200,60,.14)" stroke-width="1" stroke-dasharray="5 4"/>
+      <line x1="244" y1="478" x2="517" y2="310" stroke="rgba(0,150,255,.14)" stroke-width="1" stroke-dasharray="5 4"/>
+
+      <!-- Network device icons -->
+      <!-- Router (office) -->
+      <rect x="350" y="105" width="50" height="28" rx="3" fill="#080818" stroke="rgba(0,120,255,.4)" stroke-width="1"/>
+      <text x="375" y="117" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(0,150,255,.7)">ROUTER</text>
+      <circle cx="390" cy="126" r="2" fill="#28c840"><animate attributeName="opacity" values="1;.2;1" dur="1.8s" repeatCount="indefinite"/></circle>
+
+      <!-- Switch (office) -->
+      <rect x="350" y="142" width="50" height="22" rx="2" fill="#08080f" stroke="rgba(0,120,255,.3)" stroke-width="1"/>
+      <text x="375" y="156" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(0,140,255,.6)">SWITCH</text>
+
+      <!-- PC / workstation (office) -->
+      <rect x="316" y="100" width="28" height="36" rx="2" fill="#0a0a10" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+      <text x="330" y="121" text-anchor="middle" font-family="monospace" font-size="6" fill="rgba(255,255,255,.35)">PC</text>
+
+      <!-- RPi (living room) -->
+      <rect x="100" y="115" width="34" height="26" rx="2" fill="#0a1410" stroke="rgba(0,200,80,.3)" stroke-width="1"/>
+      <text x="117" y="126" text-anchor="middle" font-family="monospace" font-size="6.5" fill="rgba(0,200,80,.65)">RPi 4</text>
+      <text x="117" y="136" text-anchor="middle" font-family="monospace" font-size="5.5" fill="rgba(0,200,80,.4)">Pi-hole</text>
+
+      <!-- TV (living room) -->
+      <rect x="150" y="100" width="40" height="26" rx="2" fill="#0a0a0a" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
+      <text x="170" y="116" text-anchor="middle" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,.3)">Smart TV</text>
+
+      <!-- Inventory legend -->
+      <rect x="60" y="680" width="480" height="175" rx="4" fill="rgba(0,0,0,.75)" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+      <text x="80" y="700" font-family="monospace" font-size="9" fill="rgba(0,160,255,.65)" letter-spacing=".12em">NETWORK INVENTORY v1.0</text>
+      <line x1="60" y1="708" x2="540" y2="708" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+
+      <text x="80"  y="726" font-family="monospace" font-size="8" fill="rgba(255,255,255,.4)">ID</text>
+      <text x="110" y="726" font-family="monospace" font-size="8" fill="rgba(255,255,255,.4)">Device</text>
+      <text x="250" y="726" font-family="monospace" font-size="8" fill="rgba(255,255,255,.4)">IP</text>
+      <text x="350" y="726" font-family="monospace" font-size="8" fill="rgba(255,255,255,.4)">Port</text>
+      <text x="450" y="726" font-family="monospace" font-size="8" fill="rgba(255,255,255,.4)">Room</text>
+
+      <text x="80"  y="744" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.5)">J1</text>
+      <text x="110" y="744" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.5)">RPi4 Pi-hole</text>
+      <text x="250" y="744" font-family="monospace" font-size="7.5" fill="rgba(0,200,80,.6)">.1.42</text>
+      <text x="350" y="744" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.35)">PP-01</text>
+      <text x="450" y="744" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.35)">Living</text>
+
+      <text x="80"  y="760" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.45)">J3</text>
+      <text x="110" y="760" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.45)">Workstation</text>
+      <text x="250" y="760" font-family="monospace" font-size="7.5" fill="rgba(0,180,255,.55)">.1.10</text>
+      <text x="350" y="760" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.3)">PP-03</text>
+      <text x="450" y="760" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.3)">Office</text>
+
+      <text x="80"  y="776" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.38)">J4</text>
+      <text x="110" y="776" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.38)">Router</text>
+      <text x="250" y="776" font-family="monospace" font-size="7.5" fill="rgba(0,180,255,.5)">.1.1</text>
+      <text x="350" y="776" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.28)">PP-04</text>
+      <text x="450" y="776" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.28)">Office</text>
+
+      <text x="80"  y="792" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.3)">J6</text>
+      <text x="110" y="792" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.3)">Smart TV</text>
+      <text x="250" y="792" font-family="monospace" font-size="7.5" fill="rgba(0,180,255,.42)">.1.20</text>
+      <text x="350" y="792" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.22)">PP-06</text>
+      <text x="450" y="792" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.22)">Bedroom</text>
+
+      <text x="80"  y="808" font-family="monospace" font-size="7" fill="rgba(255,255,255,.18)">...</text>
+      <text x="300" y="845" text-anchor="middle" font-family="'Inter',sans-serif" font-size="9" font-weight="600" fill="rgba(255,255,255,.04)" letter-spacing=".28em">HOME NETWORK LAB</text>
+    </svg>
+  </div>
+
+  <div class="xp-text">
+    <p class="xp-index">02</p>
+    <p class="xp-overline">Network Lab</p>
+    <h2 class="xp-title">HOME NETWORK<br>MAPPING</h2>
+    <p class="xp-body">
+      Took the same discipline from Airbus and applied it at home. Every <strong>RJ45 port labelled</strong>, every device documented — IP, physical location, patch panel port, room.<br><br>
+      The goal was simple: if something breaks at 2am, I know exactly where to look. No guessing, no tracing cables blindly. <strong>Full network visibility</strong> as a personal standard.
+    </p>
+    <div class="xp-stats">
+      <div class="stat"><span class="stat-val">7</span><span class="stat-lbl">RJ45 ports</span></div>
+      <div class="stat"><span class="stat-val">12+</span><span class="stat-lbl">Devices</span></div>
+      <div class="stat"><span class="stat-val">4</span><span class="stat-lbl">Rooms</span></div>
+    </div>
+    <div class="xp-tags">
+      <span class="xp-tag">Network Mapping</span>
+      <span class="xp-tag">Documentation</span>
+      <span class="xp-tag">RJ45</span>
+      <span class="xp-tag">DHCP</span>
+      <span class="xp-tag">Inventory</span>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════
+     03 — YOUTUBE
+══════════════════════════════════ -->
+<div class="xp-panel" id="youtube">
+
+  <div class="xp-visual">
+    <svg viewBox="0 0 600 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <radialGradient id="ytAmb" cx="50%" cy="45%" r="52%">
+          <stop offset="0%" stop-color="rgba(255,40,0,0.12)"/>
+          <stop offset="100%" stop-color="transparent"/>
+        </radialGradient>
+      </defs>
+      <rect width="600" height="900" fill="#030303"/>
+      <rect width="600" height="900" fill="url(#ytAmb)"/>
+
+      <!-- Stars -->
+      <circle cx="60"  cy="60"  r=".6" fill="rgba(255,255,255,.30)"/>
+      <circle cx="450" cy="80"  r=".5" fill="rgba(255,255,255,.25)"/>
+      <circle cx="200" cy="38"  r=".6" fill="rgba(255,255,255,.28)"/>
+      <circle cx="80"  cy="820" r=".5" fill="rgba(255,255,255,.18)"/>
+      <circle cx="530" cy="760" r=".5" fill="rgba(255,255,255,.20)"/>
+
+      <!-- YouTube play button (large, centered) -->
+      <rect x="180" y="140" width="240" height="155" rx="24" fill="#0a0a0a" stroke="rgba(255,60,0,.25)" stroke-width="1.5"/>
+      <circle cx="300" cy="218" r="40" fill="rgba(255,40,0,.85)"/>
+      <polygon points="285,200 285,236 322,218" fill="white"/>
+
+      <!-- Channel name banner -->
+      <rect x="160" y="312" width="280" height="36" rx="4" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+      <text x="300" y="335" text-anchor="middle" font-family="'Inter',sans-serif" font-size="14" font-weight="600" fill="rgba(255,255,255,.75)" letter-spacing=".15em">@exebios</text>
+
+      <!-- Growth chart -->
+      <text x="300" y="390" text-anchor="middle" font-family="monospace" font-size="8.5" fill="rgba(255,255,255,.25)" letter-spacing=".15em">SUBSCRIBER GROWTH</text>
+      <rect x="60" y="400" width="480" height="180" rx="4" fill="rgba(0,0,0,.6)" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+
+      <!-- Chart axes -->
+      <line x1="90" y1="420" x2="90" y2="555" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
+      <line x1="90" y1="555" x2="510" y2="555" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
+
+      <!-- Y axis labels -->
+      <text x="82" y="425" text-anchor="end" font-family="monospace" font-size="7" fill="rgba(255,255,255,.25)">2.3K</text>
+      <text x="82" y="467" text-anchor="end" font-family="monospace" font-size="7" fill="rgba(255,255,255,.2)">1.5K</text>
+      <text x="82" y="510" text-anchor="end" font-family="monospace" font-size="7" fill="rgba(255,255,255,.15)">1K</text>
+      <text x="82" y="553" text-anchor="end" font-family="monospace" font-size="7" fill="rgba(255,255,255,.12)">0</text>
+
+      <!-- X axis labels -->
+      <text x="115" y="568" font-family="monospace" font-size="7" fill="rgba(255,255,255,.2)">Y1</text>
+      <text x="210" y="568" font-family="monospace" font-size="7" fill="rgba(255,255,255,.2)">Y2</text>
+      <text x="350" y="568" font-family="monospace" font-size="7" fill="rgba(255,255,255,.2)">Y3</text>
+      <text x="480" y="568" font-family="monospace" font-size="7" fill="rgba(255,255,255,.2)">Now</text>
+
+      <!-- Growth line — slow start, pivot, spike -->
+      <polyline
+        points="90,553 115,550 140,547 165,543 190,540 215,535 240,528 265,522 290,515 310,508 330,495 360,475 390,455 420,435 455,422 490,420"
+        fill="none" stroke="rgba(255,60,0,.6)" stroke-width="2" stroke-linejoin="round"/>
+      <!-- Filled area under line -->
+      <polygon
+        points="90,553 115,550 140,547 165,543 190,540 215,535 240,528 265,522 290,515 310,508 330,495 360,475 390,455 420,435 455,422 490,420 490,555 90,555"
+        fill="rgba(255,40,0,.06)"/>
+
+      <!-- 1K milestone marker -->
+      <line x1="250" y1="514" x2="250" y2="555" stroke="rgba(255,200,0,.3)" stroke-width="1" stroke-dasharray="3 2"/>
+      <circle cx="250" cy="514" r="4" fill="rgba(255,200,0,.7)"/>
+      <rect x="218" y="498" width="64" height="14" rx="2" fill="rgba(40,30,0,.8)" stroke="rgba(255,200,0,.25)" stroke-width="1"/>
+      <text x="250" y="508" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(255,200,0,.75)">Goal: 1K ✓</text>
+
+      <!-- Current point -->
+      <circle cx="490" cy="420" r="5" fill="rgba(255,40,0,.9)"/>
+      <circle cx="490" cy="420" r="10" fill="none" stroke="rgba(255,40,0,.3)" stroke-width="1">
+        <animate attributeName="r" values="7;14;7" dur="2.5s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values=".4;0;.4" dur="2.5s" repeatCount="indefinite"/>
+      </circle>
+
+      <!-- Stats row -->
+      <rect x="60"  y="618" width="148" height="68" rx="3" fill="rgba(255,255,255,.02)" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+      <text x="134" y="648" text-anchor="middle" font-family="'Inter',sans-serif" font-size="24" font-weight="700" fill="rgba(255,255,255,.78)">2.3K</text>
+      <text x="134" y="664" text-anchor="middle" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.28)" letter-spacing=".12em">SUBSCRIBERS</text>
+      <text x="134" y="678" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(0,220,80,.45)">↑ from 0</text>
+
+      <rect x="226" y="618" width="148" height="68" rx="3" fill="rgba(255,255,255,.02)" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+      <text x="300" y="648" text-anchor="middle" font-family="'Inter',sans-serif" font-size="24" font-weight="700" fill="rgba(255,60,0,.82)">800K</text>
+      <text x="300" y="664" text-anchor="middle" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.28)" letter-spacing=".12em">TOTAL VIEWS</text>
+      <text x="300" y="678" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(255,60,0,.45)">All time</text>
+
+      <rect x="392" y="618" width="148" height="68" rx="3" fill="rgba(255,255,255,.02)" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+      <text x="466" y="648" text-anchor="middle" font-family="'Inter',sans-serif" font-size="24" font-weight="700" fill="rgba(255,200,0,.75)">10K+</text>
+      <text x="466" y="664" text-anchor="middle" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.28)" letter-spacing=".12em">WATCH HOURS</text>
+      <text x="466" y="678" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(255,200,0,.4)">Goal reached ✓</text>
+
+      <!-- Monetized badge -->
+      <rect x="190" y="716" width="220" height="34" rx="4" fill="rgba(255,200,0,.08)" stroke="rgba(255,200,0,.25)" stroke-width="1"/>
+      <text x="300" y="728" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(255,200,0,.7)" letter-spacing=".12em">★ MONETIZED</text>
+      <text x="300" y="742" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(255,200,0,.4)">YouTube Partner Program</text>
+
+      <text x="300" y="820" text-anchor="middle" font-family="'Inter',sans-serif" font-size="9" font-weight="600" fill="rgba(255,255,255,.04)" letter-spacing=".28em">YOUTUBE · @EXEBIOS</text>
+    </svg>
+  </div>
+
+  <div class="xp-text">
+    <p class="xp-index">03</p>
+    <p class="xp-overline">Content Creation</p>
+    <h2 class="xp-title">YOUTUBE<br>@EXEBIOS</h2>
+    <p class="xp-body">
+      Started as a cybersecurity awareness channel. When traction was slow, I pivoted to <strong>Minecraft glitch content</strong> — the audience found it, and I kept building.<br><br>
+      Set a clear goal: <strong>1K subscribers + 10K watch hours</strong> within one year to reach YouTube monetisation. Hit it. Then kept going — now sitting at <strong>2.3K subs and 800K views</strong>.<br><br>
+      The real lesson wasn't the numbers — it was learning to adapt, ship consistently, and let the data guide decisions.
+    </p>
+    <div class="xp-stats">
+      <div class="stat"><span class="stat-val">2.3K</span><span class="stat-lbl">Subscribers</span></div>
+      <div class="stat"><span class="stat-val">800K</span><span class="stat-lbl">Views</span></div>
+      <div class="stat"><span class="stat-val">★</span><span class="stat-lbl">Monetised</span></div>
+    </div>
+    <div class="xp-tags">
+      <span class="xp-tag">YouTube</span>
+      <span class="xp-tag">Content Strategy</span>
+      <span class="xp-tag">Cybersecurity</span>
+      <span class="xp-tag">Pivoting</span>
+      <span class="xp-tag">Growth</span>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════
+     04 — AI & NEW TECH
+══════════════════════════════════ -->
+<div class="xp-panel reverse" id="ai">
+
+  <div class="xp-visual">
+    <svg viewBox="0 0 600 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <radialGradient id="aiAmb" cx="50%" cy="45%" r="55%">
+          <stop offset="0%" stop-color="rgba(130,80,255,0.16)"/>
+          <stop offset="100%" stop-color="transparent"/>
+        </radialGradient>
+        <radialGradient id="nodeGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="rgba(130,80,255,0.4)"/>
+          <stop offset="100%" stop-color="transparent"/>
+        </radialGradient>
+      </defs>
+      <rect width="600" height="900" fill="#030305"/>
+      <rect width="600" height="900" fill="url(#aiAmb)"/>
+
+      <!-- Stars -->
+      <circle cx="45"  cy="75"  r=".6" fill="rgba(255,255,255,.3)"/>
+      <circle cx="510" cy="60"  r=".5" fill="rgba(255,255,255,.25)"/>
+      <circle cx="300" cy="35"  r=".6" fill="rgba(255,255,255,.28)"/>
+      <circle cx="70"  cy="810" r=".5" fill="rgba(255,255,255,.18)"/>
+      <circle cx="545" cy="760" r=".5" fill="rgba(255,255,255,.20)"/>
+
+      <!-- ── Neural network / MCP node diagram ── -->
+      <!-- Central AI node -->
+      <circle cx="300" cy="310" r="48" fill="#0a0612" stroke="rgba(130,80,255,.5)" stroke-width="1.5"/>
+      <circle cx="300" cy="310" r="48" fill="url(#nodeGlow)" opacity=".6"/>
+      <text x="300" y="305" text-anchor="middle" font-family="monospace" font-size="11" font-weight="700" fill="rgba(160,110,255,.95)">CLAUDE</text>
+      <text x="300" y="321" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(255,255,255,.45)">Anthropic</text>
+      <!-- Pulse -->
+      <circle cx="300" cy="310" r="56" fill="none" stroke="rgba(130,80,255,.2)" stroke-width="1">
+        <animate attributeName="r" values="52;68;52" dur="3.5s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values=".4;0;.4" dur="3.5s" repeatCount="indefinite"/>
+      </circle>
+
+      <!-- MCP label -->
+      <rect x="228" y="375" width="144" height="22" rx="3" fill="rgba(130,80,255,.08)" stroke="rgba(130,80,255,.25)" stroke-width="1"/>
+      <text x="300" y="390" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(160,110,255,.7)" letter-spacing=".12em">MCP PROTOCOL</text>
+
+      <!-- Orbiting tool nodes -->
+      <!-- Obsidian -->
+      <circle cx="160" cy="220" r="30" fill="#0a080f" stroke="rgba(100,60,220,.4)" stroke-width="1.2"/>
+      <text x="160" y="215" text-anchor="middle" font-family="monospace" font-size="7.5" fill="rgba(130,80,255,.8)">Obsidian</text>
+      <text x="160" y="228" text-anchor="middle" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,.3)">Notes / PKM</text>
+      <line x1="190" y1="240" x2="255" y2="292" stroke="rgba(130,80,255,.3)" stroke-width="1.2" stroke-dasharray="5 3"/>
+
+      <!-- ChatGPT -->
+      <circle cx="440" cy="195" r="30" fill="#030a08" stroke="rgba(0,180,120,.35)" stroke-width="1.2"/>
+      <text x="440" y="190" text-anchor="middle" font-family="monospace" font-size="7.5" fill="rgba(0,200,120,.75)">ChatGPT</text>
+      <text x="440" y="203" text-anchor="middle" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,.3)">OpenAI</text>
+      <line x1="412" y1="215" x2="345" y2="285" stroke="rgba(0,180,120,.25)" stroke-width="1.2" stroke-dasharray="5 3"/>
+
+      <!-- Blockchain node -->
+      <circle cx="155" cy="420" r="26" fill="#050a10" stroke="rgba(255,160,0,.3)" stroke-width="1.2"/>
+      <text x="155" y="415" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(255,160,0,.7)">Blockchain</text>
+      <text x="155" y="427" text-anchor="middle" font-family="monospace" font-size="6" fill="rgba(255,255,255,.25)">DeFi / Web3</text>
+      <line x1="181" y1="405" x2="258" y2="345" stroke="rgba(255,160,0,.2)" stroke-width="1" stroke-dasharray="4 3"/>
+
+      <!-- Claude 101 cert node -->
+      <circle cx="445" cy="415" r="30" fill="#0a0804" stroke="rgba(255,200,0,.35)" stroke-width="1.2"/>
+      <text x="445" y="410" text-anchor="middle" font-family="monospace" font-size="7.5" fill="rgba(255,200,0,.8)">Claude 101</text>
+      <text x="445" y="422" text-anchor="middle" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,.3)">Certified ✓</text>
+      <line x1="416" y1="400" x2="345" y2="350" stroke="rgba(255,200,0,.28)" stroke-width="1.2" stroke-dasharray="5 3"/>
+
+      <!-- MCP flow illustration -->
+      <rect x="60" y="498" width="480" height="220" rx="4" fill="rgba(0,0,0,.75)" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+      <text x="80" y="518" font-family="monospace" font-size="9" fill="rgba(130,80,255,.65)" letter-spacing=".12em">MCP · MODEL CONTEXT PROTOCOL</text>
+      <line x1="60" y1="526" x2="540" y2="526" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+
+      <!-- Flow: Claude ↔ Obsidian via MCP -->
+      <rect x="80"  y="542" width="80" height="32" rx="3" fill="#0a0612" stroke="rgba(130,80,255,.4)" stroke-width="1"/>
+      <text x="120" y="561" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(160,110,255,.8)">CLAUDE</text>
+
+      <rect x="260" y="542" width="80" height="32" rx="3" fill="#0a0a0a" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+      <text x="300" y="557" text-anchor="middle" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.5)">MCP</text>
+      <text x="300" y="568" text-anchor="middle" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,.25)">server</text>
+
+      <rect x="440" y="542" width="80" height="32" rx="3" fill="#0a080f" stroke="rgba(100,60,220,.35)" stroke-width="1"/>
+      <text x="480" y="561" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(130,80,255,.75)">OBSIDIAN</text>
+
+      <!-- Arrows -->
+      <line x1="160" y1="558" x2="258" y2="558" stroke="rgba(130,80,255,.45)" stroke-width="1.5"/>
+      <polygon points="254,553 266,558 254,563" fill="rgba(130,80,255,.6)"/>
+      <line x1="342" y1="558" x2="438" y2="558" stroke="rgba(130,80,255,.45)" stroke-width="1.5"/>
+      <polygon points="434,553 446,558 434,563" fill="rgba(130,80,255,.6)"/>
+
+      <!-- Data flow description -->
+      <text x="300" y="598" text-anchor="middle" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.3)">Claude reads &amp; writes Obsidian vault via MCP</text>
+      <text x="300" y="614" text-anchor="middle" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.25)">Notes → AI context → Enhanced responses</text>
+
+      <!-- Sample interaction -->
+      <text x="80"  y="640" font-family="monospace" font-size="8" fill="rgba(130,80,255,.55)">User:</text>
+      <text x="116" y="640" font-family="monospace" font-size="8" fill="rgba(255,255,255,.45)">"Summarise my networking notes"</text>
+      <text x="80"  y="658" font-family="monospace" font-size="8" fill="rgba(0,200,80,.55)">Claude:</text>
+      <text x="128" y="658" font-family="monospace" font-size="8" fill="rgba(255,255,255,.35)">[reads vault via MCP] → structured summary</text>
+      <text x="80"  y="676" font-family="monospace" font-size="8" fill="rgba(130,80,255,.4)">Result:</text>
+      <text x="128" y="676" font-family="monospace" font-size="8" fill="rgba(255,255,255,.3)">Knowledge linked, actionable, searchable</text>
+
+      <text x="300" y="860" text-anchor="middle" font-family="'Inter',sans-serif" font-size="9" font-weight="600" fill="rgba(255,255,255,.04)" letter-spacing=".28em">AI · MCP · OBSIDIAN</text>
+    </svg>
+  </div>
+
+  <div class="xp-text">
+    <p class="xp-index">04</p>
+    <p class="xp-overline">Emerging Tech</p>
+    <h2 class="xp-title">AI &amp; NEW<br>TECHNOLOGIES</h2>
+    <p class="xp-body">
+      Started with <strong>ChatGPT</strong>, moved to <strong>Claude</strong>. Not just using these tools — understanding how they work and how to connect them to real workflows.<br><br>
+      Discovered the <strong>MCP (Model Context Protocol)</strong> and started experimenting: Claude connected to my Obsidian vault, reading and writing notes through context. Personal knowledge management meets AI.<br><br>
+      Also exploring <strong>Blockchain / Web3</strong> as adjacent technology that intersects with security. Earned the <strong>Claude 101 certificate</strong> from Anthropic.
+    </p>
+    <div class="xp-stats">
+      <div class="stat"><span class="stat-val">MCP</span><span class="stat-lbl">Integrated</span></div>
+      <div class="stat"><span class="stat-val">101</span><span class="stat-lbl">Certified</span></div>
+      <div class="stat"><span class="stat-val">∞</span><span class="stat-lbl">Curious</span></div>
+    </div>
+    <div class="xp-tags">
+      <span class="xp-tag">Claude</span>
+      <span class="xp-tag">MCP</span>
+      <span class="xp-tag">Obsidian</span>
+      <span class="xp-tag">ChatGPT</span>
+      <span class="xp-tag">Blockchain</span>
+      <span class="xp-tag">AI Tools</span>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ── CTA ── -->
+<section id="cta">
+  <div class="cta-inner">
+    <p class="overline">Keep exploring</p>
+    <h2>MORE TO<br>COME.</h2>
+    <p>Every project starts the same way — a problem worth solving and a weekend to figure it out.</p>
+    <a href="index.html" class="cta-btn">Back to portfolio <span class="cta-arrow">→</span></a>
+  </div>
+</section>
+
+<footer>
+  <span>Clément Dalmas · Cybersecurity</span>
+  <span>© 2026</span>
+</footer>
+
+<script>
+/* ── Hero starfield ── */
+(function(){
+  const c=document.getElementById('hero-canvas');
+  c.width=window.innerWidth; c.height=window.innerHeight;
+  const ctx=c.getContext('2d');
+  for(let i=0;i<380;i++){
+    const x=Math.random()*c.width, y=Math.random()*c.height;
+    const r=Math.random()<.07?Math.random()*1.8+1:Math.random()<.25?Math.random()*.9+.4:Math.random()*.4+.15;
+    const a=Math.random()*.6+.15;
+    const t=Math.random();
+    ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2);
+    ctx.fillStyle=t<.12?`rgba(180,210,255,${a})`:t<.2?`rgba(255,230,180,${a})`:`rgba(255,255,255,${a})`;
+    ctx.fill();
+    if(r>1.2){
+      ctx.strokeStyle=`rgba(255,255,255,${a*.3})`; ctx.lineWidth=.5;
+      const sp=r*4.5;
+      ctx.beginPath(); ctx.moveTo(x-sp,y); ctx.lineTo(x+sp,y);
+      ctx.moveTo(x,y-sp); ctx.lineTo(x,y+sp); ctx.stroke();
+    }
+  }
+})();
+
+/* ── Navbar scroll ── */
+const nav=document.getElementById('navbar');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>10),{passive:true});
+
+/* ── Reveal on scroll ── */
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+},{threshold:.15});
+document.querySelectorAll('.xp-text, .cta-inner').forEach(el=>{
+  el.classList.add('reveal'); observer.observe(el);
+});
+
+/* ── Active nav ── */
+const ids=['pihole','network','youtube','ai'];
+const links=document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  ids.forEach(id=>{ const el=document.getElementById(id); if(el&&window.scrollY>=el.offsetTop-120) cur=id; });
+  links.forEach(a=>{ a.classList.toggle('active',a.getAttribute('href')==='#'+cur); });
+},{passive:true});
+</script>
+</body>
+</html>
