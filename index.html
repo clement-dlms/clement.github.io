@@ -82,24 +82,80 @@ body {
 .cta-arrow { font-size: 14px; transition: transform 0.3s ease; display: inline-block; }
 .cta-btn:hover .cta-arrow { transform: translateX(5px); }
 
-/* ── Stars ── */
+/* ── Navbar ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 48px;
+  height: 64px;
+  background: transparent;
+  transition: background 0.4s ease;
+}
+nav.scrolled {
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.nav-logo {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #fff;
+  text-decoration: none;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  list-style: none;
+}
+.nav-links a {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+  transition: color 0.25s ease;
+  position: relative;
+  padding-bottom: 3px;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 0; height: 1px;
+  background: rgba(100,170,255,0.8);
+  transition: width 0.3s ease;
+}
+.nav-links a:hover { color: #fff; }
+.nav-links a:hover::after { width: 100%; }
+.nav-sep {
+  color: rgba(255,255,255,0.2);
+  font-size: 13px;
+  user-select: none;
+}
+.nav-logo-item {
+  font-weight: 700 !important;
+  letter-spacing: 0.28em !important;
+  font-size: 12px !important;
+  color: rgba(255,255,255,0.95) !important;
+}
+.nav-logo-item::after { display: none !important; }
+
+
 .stars {
   position: absolute;
   inset: 0;
-  background-image:
-    radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.6) 0%, transparent 100%),
-    radial-gradient(1px 1px at 25% 60%, rgba(255,255,255,0.4) 0%, transparent 100%),
-    radial-gradient(1px 1px at 40% 10%, rgba(255,255,255,0.5) 0%, transparent 100%),
-    radial-gradient(1px 1px at 55% 80%, rgba(255,255,255,0.3) 0%, transparent 100%),
-    radial-gradient(1px 1px at 70% 35%, rgba(255,255,255,0.5) 0%, transparent 100%),
-    radial-gradient(1px 1px at 15% 75%, rgba(255,255,255,0.4) 0%, transparent 100%),
-    radial-gradient(1px 1px at 85% 15%, rgba(255,255,255,0.6) 0%, transparent 100%),
-    radial-gradient(1px 1px at 5%  50%, rgba(255,255,255,0.3) 0%, transparent 100%),
-    radial-gradient(1px 1px at 60% 55%, rgba(255,255,255,0.4) 0%, transparent 100%),
-    radial-gradient(1px 1px at 90% 70%, rgba(255,255,255,0.5) 0%, transparent 100%),
-    radial-gradient(1px 1px at 32% 88%, rgba(255,255,255,0.3) 0%, transparent 100%),
-    radial-gradient(1px 1px at 78% 90%, rgba(255,255,255,0.4) 0%, transparent 100%);
   pointer-events: none;
+  overflow: hidden;
 }
 .vignette {
   position: absolute;
@@ -227,14 +283,32 @@ body {
   0%,100%{opacity:0.88;}
   50%{opacity:1;}
 }
+@keyframes ledRed {
+  0%,100%{opacity:1;}
+  50%{opacity:0.65;}
+}
+@keyframes ledGreenGlow {
+  0%,40%,100%{opacity:0.9;}
+  45%,95%{opacity:0.08;}
+}
 </style>
 </head>
 <body>
 
+<nav id="navbar">
+  <ul class="nav-links">
+    <li><a href="#hero" class="nav-logo-item active">CLÉMENT D</a></li>
+    <li class="nav-sep">·</li>
+    <li><a href="#companies">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#sports">Sports</a></li>
+  </ul>
+</nav>
+
 <!-- ════════════════════════════════════
      SECTION 1 — HERO
 ════════════════════════════════════ -->
-<section class="section">
+<section class="section" id="hero">
   <div class="stars"></div>
   <div class="sphere-center">
     <div class="glow-layer-1"></div>
@@ -316,26 +390,7 @@ body {
       <defs>
 
         <!-- Ambient warm orange/red glow behind BH -->
-        <radialGradient id="bhAmb" cx="340" cy="510" r="400" gradientUnits="userSpaceOnUse">
-          <stop offset="0%"   stop-color="#ff5500" stop-opacity="0.14"/>
-          <stop offset="35%"  stop-color="#cc3300" stop-opacity="0.07"/>
-          <stop offset="75%"  stop-color="#551100" stop-opacity="0.02"/>
-          <stop offset="100%" stop-color="#000"    stop-opacity="0"/>
-        </radialGradient>
-
         <!-- Disk glow filters -->
-        <filter id="dg1" x="-60%" y="-60%" width="220%" height="220%">
-          <feGaussianBlur stdDeviation="9" result="b"/>
-          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-        <filter id="dg2" x="-80%" y="-80%" width="260%" height="260%">
-          <feGaussianBlur stdDeviation="18" result="b"/>
-          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-        <filter id="photonF" x="-120%" y="-120%" width="340%" height="340%">
-          <feGaussianBlur stdDeviation="5" result="b"/>
-          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
 
         <!-- Clip: far side of disk (upper = behind void) -->
         <clipPath id="diskFar">
@@ -351,16 +406,8 @@ body {
       <!-- ══ LAYER 1 — Ambient glow ══ -->
       <circle cx="340" cy="510" r="440" fill="url(#bhAmb)"/>
       <!-- Secondary warm pool (near side, brighter) -->
-      <ellipse cx="330" cy="640" rx="260" ry="160" fill="rgba(160,50,0,0.055)"/>
 
       <!-- ══ LAYER 2 — FAR accretion disk (behind rack + void) ══ -->
-      <g clip-path="url(#diskFar)" style="animation:diskPulse 5s ease-in-out infinite;">
-        <ellipse cx="340" cy="513" rx="375" ry="82" fill="none" stroke="#550f00" stroke-width="5"  opacity="0.35"/>
-        <ellipse cx="340" cy="513" rx="335" ry="73" fill="none" stroke="#993000" stroke-width="9"  opacity="0.45" filter="url(#dg1)"/>
-        <ellipse cx="340" cy="513" rx="278" ry="61" fill="none" stroke="#dd5200" stroke-width="14" opacity="0.55" filter="url(#dg1)"/>
-        <ellipse cx="340" cy="513" rx="222" ry="49" fill="none" stroke="#ffaa30" stroke-width="17" opacity="0.62" filter="url(#dg2)"/>
-        <ellipse cx="340" cy="513" rx="178" ry="39" fill="none" stroke="#fff0aa" stroke-width="9"  opacity="0.50" filter="url(#dg1)"/>
-      </g>
 
       <!-- ══ LAYER 3 — SERVER RACK (rotate 35° clockwise around top-centre) ══ -->
       <!--
@@ -586,21 +633,10 @@ body {
 
       <!-- ══ LAYER 4 — BLACK HOLE VOID (covers lower rack) ══ -->
       <!-- Graduated pre-void darkening -->
-      <circle cx="340" cy="510" r="215" fill="rgba(0,0,0,0.45)"/>
-      <circle cx="340" cy="510" r="190" fill="rgba(0,0,0,0.65)"/>
-      <circle cx="340" cy="510" r="168" fill="rgba(0,0,0,0.85)"/>
       <!-- Solid void -->
       <circle cx="340" cy="510" r="155" fill="#000000"/>
 
       <!-- ══ LAYER 5 — NEAR accretion disk (in front of void) ══ -->
-      <g clip-path="url(#diskNear)" style="animation:diskPulse 4s ease-in-out infinite 0.5s;">
-        <ellipse cx="340" cy="513" rx="375" ry="82" fill="none" stroke="#661100" stroke-width="6"  opacity="0.42"/>
-        <ellipse cx="340" cy="513" rx="335" ry="73" fill="none" stroke="#bb4200" stroke-width="11" opacity="0.62" filter="url(#dg1)"/>
-        <ellipse cx="340" cy="513" rx="278" ry="61" fill="none" stroke="#ff7700" stroke-width="16" opacity="0.78" filter="url(#dg2)"/>
-        <ellipse cx="340" cy="513" rx="222" ry="49" fill="none" stroke="#ffcc44" stroke-width="19" opacity="0.88" filter="url(#dg2)"/>
-        <ellipse cx="340" cy="513" rx="178" ry="39" fill="none" stroke="#ffffe0" stroke-width="10" opacity="0.80" filter="url(#dg1)"/>
-      </g>
-
       <!-- ══ LAYER 6 — Photon sphere & event horizon glow ══ -->
       <circle cx="340" cy="510" r="157" fill="none" stroke="rgba(80,120,255,0.3)"  stroke-width="4" filter="url(#photonF)"/>
       <circle cx="340" cy="510" r="155" fill="none" stroke="rgba(180,210,255,0.18)" stroke-width="1.5"/>
@@ -608,14 +644,7 @@ body {
       <circle cx="340" cy="510" r="162" fill="none" stroke="rgba(40,80,200,0.10)"  stroke-width="8"/>
 
       <!-- ══ LAYER 7 — Gravitational lensing arcs ══ -->
-      <path d="M168,358 Q234,485 180,618" fill="none" stroke="rgba(255,200,120,0.07)" stroke-width="2"/>
-      <path d="M142,394 Q214,515 155,648" fill="none" stroke="rgba(255,200,120,0.04)" stroke-width="1.5"/>
-      <path d="M512,345 Q462,482 507,622" fill="none" stroke="rgba(255,200,120,0.07)" stroke-width="2"/>
-      <path d="M536,380 Q478,513 526,650" fill="none" stroke="rgba(255,200,120,0.04)" stroke-width="1.5"/>
       <!-- Curved light paths bending around BH -->
-      <path d="M200,270 Q370,380 260,520 Q210,590 240,680" fill="none" stroke="rgba(220,190,100,0.05)" stroke-width="1.5"/>
-      <path d="M460,260 Q320,370 400,510 Q445,590 420,690" fill="none" stroke="rgba(220,190,100,0.05)" stroke-width="1.5"/>
-
       <!-- ══ Sparse star field (barely perceptible) ══ -->
       <circle cx="45"  cy="72"  r="0.6" fill="rgba(255,255,255,0.38)"/>
       <circle cx="118" cy="195" r="0.5" fill="rgba(255,255,255,0.28)"/>
@@ -647,12 +676,499 @@ body {
   <div class="companies-content">
     <h2 class="headline">INDUSTRY<br>EXPERIENCE</h2>
     <p class="sub">Partners · Clients · Network</p>
-    <a href="#discover" class="cta-btn">
-      Discover <span class="cta-arrow">→</span>
+    <a href="#Companies" class="cta-btn">
+      Companies <span class="cta-arrow">→</span>
     </a>
   </div>
 
 </section>
 
+<!-- ════════════════════════════════════
+     SECTION 3 — PROJECTS
+════════════════════════════════════ -->
+<section class="section" id="projects">
+  <div class="stars"></div>
+
+  <!-- RPi scene — right side -->
+  <div class="companies-scene" id="rpi-scene" style="left:auto;right:0;">
+    <svg viewBox="0 0 960 1080" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <!-- ── Subtle warm ambient glow behind board ── -->
+      <radialGradient id="rpiAmb" cx="42%" cy="52%" r="38%">
+        <stop offset="0%" stop-color="rgba(180,0,255,0.13)"/>
+        <stop offset="100%" stop-color="transparent"/>
+      </radialGradient>
+      <rect x="0" y="0" width="960" height="1080" fill="url(#rpiAmb)"/>
+
+      <!-- ══ RASPBERRY PI 4 — 3/4 perspective view ══
+           Board is 85×56mm; we draw it ~340×224px then skew for 3/4 look.
+           Top-left corner at (140,280), skew 20° on X.
+      ══ -->
+      <g transform="translate(130, 260)">
+
+        <!-- ── Board top face (skewed parallelogram) ── -->
+        <!-- We use a polygon: TL, TR, BR, BL with 55px horizontal skew for perspective -->
+        <polygon points="55,0 395,0 450,270 110,270" fill="#1a6b2f" stroke="#0d4a1f" stroke-width="1.5"/>
+
+        <!-- PCB grid lines (subtle) -->
+        <line x1="55" y1="54" x2="395" y2="54" stroke="#155824" stroke-width="0.4"/>
+        <line x1="55" y1="108" x2="395" y2="108" stroke="#155824" stroke-width="0.4"/>
+        <line x1="55" y1="162" x2="395" y2="162" stroke="#155824" stroke-width="0.4"/>
+        <line x1="55" y1="216" x2="395" y2="216" stroke="#155824" stroke-width="0.4"/>
+        <line x1="135" y1="0" x2="190" y2="270" stroke="#155824" stroke-width="0.4"/>
+        <line x1="215" y1="0" x2="270" y2="270" stroke="#155824" stroke-width="0.4"/>
+        <line x1="295" y1="0" x2="350" y2="270" stroke="#155824" stroke-width="0.4"/>
+        <line x1="375" y1="0" x2="395" y2="54" stroke="#155824" stroke-width="0.4"/>
+
+        <!-- ── Board front edge (thickness) ── -->
+        <polygon points="110,270 450,270 450,292 110,292" fill="#145220" stroke="#0d4a1f" stroke-width="1"/>
+        <!-- Board left edge -->
+        <polygon points="55,0 110,270 110,292 55,22" fill="#0f3d18" stroke="#0d4a1f" stroke-width="1"/>
+
+        <!-- ── GPIO Header (40-pin) — top-right area ── -->
+        <!-- Black plastic block -->
+        <polygon points="280,8 388,8 393,28 285,28" fill="#111" stroke="#222" stroke-width="0.8"/>
+        <!-- Pin rows -->
+        <g fill="#c8a000" opacity="0.85">
+          <!-- Row 1 (20 pins) -->
+          <rect x="283" y="10" width="4" height="6" rx="0.5"/>
+          <rect x="291" y="10" width="4" height="6" rx="0.5"/>
+          <rect x="299" y="10" width="4" height="6" rx="0.5"/>
+          <rect x="307" y="10" width="4" height="6" rx="0.5"/>
+          <rect x="315" y="10" width="4" height="6" rx="0.5"/>
+          <rect x="323" y="10" width="4" height="6" rx="0.5"/>
+          <rect x="331" y="10" width="4" height="6" rx="0.5"/>
+          <rect x="339" y="10" width="4" height="6" rx="0.5"/>
+          <rect x="347" y="10" width="4" height="6" rx="0.5"/>
+          <rect x="355" y="10" width="4" height="6" rx="0.5"/>
+          <rect x="363" y="10" width="4" height="6" rx="0.5"/>
+          <rect x="371" y="10" width="4" height="6" rx="0.5"/>
+          <rect x="379" y="10" width="4" height="6" rx="0.5"/>
+          <rect x="387" y="10" width="4" height="6" rx="0.5"/>
+          <!-- Row 2 -->
+          <rect x="285" y="18" width="4" height="6" rx="0.5"/>
+          <rect x="293" y="18" width="4" height="6" rx="0.5"/>
+          <rect x="301" y="18" width="4" height="6" rx="0.5"/>
+          <rect x="309" y="18" width="4" height="6" rx="0.5"/>
+          <rect x="317" y="18" width="4" height="6" rx="0.5"/>
+          <rect x="325" y="18" width="4" height="6" rx="0.5"/>
+          <rect x="333" y="18" width="4" height="6" rx="0.5"/>
+          <rect x="341" y="18" width="4" height="6" rx="0.5"/>
+          <rect x="349" y="18" width="4" height="6" rx="0.5"/>
+          <rect x="357" y="18" width="4" height="6" rx="0.5"/>
+          <rect x="365" y="18" width="4" height="6" rx="0.5"/>
+          <rect x="373" y="18" width="4" height="6" rx="0.5"/>
+          <rect x="381" y="18" width="4" height="6" rx="0.5"/>
+          <rect x="389" y="18" width="4" height="6" rx="0.5"/>
+        </g>
+
+        <!-- ── SoC chip (BCM2711) — center-left ── -->
+        <polygon points="130,90 230,90 238,160 138,160" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+        <polygon points="133,93 227,93 235,157 141,157" fill="#222" stroke="#2a2a2a" stroke-width="0.5"/>
+        <!-- Chip label -->
+        <text x="172" y="128" font-family="monospace" font-size="9" fill="#555" transform="skewX(-3)">BCM2711</text>
+        <text x="175" y="140" font-family="monospace" font-size="7" fill="#444" transform="skewX(-3)">RPi 4</text>
+        <!-- Chip highlight -->
+        <polygon points="133,93 200,93 206,108 139,108" fill="rgba(255,255,255,0.04)"/>
+
+        <!-- ── RAM chip (Samsung) — right of SoC ── -->
+        <polygon points="245,95 305,95 311,135 251,135" fill="#1c1c1c" stroke="#2e2e2e" stroke-width="0.8"/>
+        <text x="263" y="118" font-family="monospace" font-size="7" fill="#444" transform="skewX(-2)">LPDDR4</text>
+        <polygon points="247,97 305,97 309,108 251,108" fill="rgba(255,255,255,0.03)"/>
+
+        <!-- ── USB-C Power port — bottom-left edge ── -->
+        <polygon points="56,198 85,198 90,218 61,218" fill="#555" stroke="#333" stroke-width="0.8"/>
+        <polygon points="58,200 83,200 87,214 62,214" fill="#2a2a2a"/>
+        <text x="62" y="210" font-family="monospace" font-size="6" fill="#888">PWR</text>
+
+        <!-- ── HDMI ports (x2) — bottom edge ── -->
+        <polygon points="100,195 140,195 144,215 104,215" fill="#333" stroke="#222" stroke-width="0.8"/>
+        <polygon points="102,197 138,197 142,213 106,213" fill="#1a1a1a"/>
+        <polygon points="148,195 188,195 192,215 152,215" fill="#333" stroke="#222" stroke-width="0.8"/>
+        <polygon points="150,197 186,197 190,213 154,213" fill="#1a1a1a"/>
+        <text x="110" y="208" font-family="monospace" font-size="5.5" fill="#777">mHDMI</text>
+        <text x="158" y="208" font-family="monospace" font-size="5.5" fill="#777">mHDMI</text>
+
+        <!-- ── USB 3.0 ports (x2, blue) — right edge ── -->
+        <polygon points="380,80 448,80 453,120 385,120" fill="#1144aa" stroke="#0a2e88" stroke-width="0.8"/>
+        <polygon points="382,82 446,82 450,98 386,98" fill="#0a30a0"/>
+        <polygon points="382,100 446,100 450,116 386,116" fill="#0a30a0"/>
+        <text x="396" y="93" font-family="monospace" font-size="6" fill="#4488ff">USB3</text>
+        <text x="396" y="111" font-family="monospace" font-size="6" fill="#4488ff">USB3</text>
+
+        <!-- ── USB 2.0 ports (x2, black) ── -->
+        <polygon points="380,128 448,128 453,168 385,168" fill="#1a1a1a" stroke="#111" stroke-width="0.8"/>
+        <polygon points="382,130 446,130 450,146 386,146" fill="#111"/>
+        <polygon points="382,148 446,148 450,164 386,164" fill="#111"/>
+        <text x="396" y="141" font-family="monospace" font-size="6" fill="#555">USB2</text>
+        <text x="396" y="159" font-family="monospace" font-size="6" fill="#555">USB2</text>
+
+        <!-- ── Ethernet port ── -->
+        <polygon points="380,175 450,175 455,225 385,225" fill="#c8a000" stroke="#a07800" stroke-width="0.8"/>
+        <polygon points="382,177 448,177 452,222 386,222" fill="#1a1500"/>
+        <!-- Ethernet LEDs -->
+        <circle cx="408" cy="192" r="3" class="pg" style="animation-delay:0.1s"/>
+        <circle cx="420" cy="192" r="3" class="pa" style="animation-delay:0.3s"/>
+        <text x="396" y="212" font-family="monospace" font-size="6" fill="#c8a000">GbE</text>
+
+        <!-- ── SD card slot — bottom edge left ── -->
+        <polygon points="56,235 130,235 133,252 59,252" fill="#888" stroke="#555" stroke-width="0.6"/>
+        <polygon points="58,237 128,237 130,249 61,249" fill="#ccc" opacity="0.15"/>
+        <text x="72" y="247" font-family="monospace" font-size="6" fill="#aaa">SD</text>
+
+        <!-- ── 3.5mm audio jack — bottom ── -->
+        <polygon points="195,235 225,235 228,255 198,255" fill="#333" stroke="#222" stroke-width="0.6"/>
+        <ellipse cx="211" cy="244" rx="8" ry="6" fill="#111" transform="skewX(-4)"/>
+
+        <!-- ── CSI camera connector ── -->
+        <polygon points="260,5 310,5 313,20 263,20" fill="#222" stroke="#333" stroke-width="0.6"/>
+        <text x="267" y="15" font-family="monospace" font-size="6" fill="#555">CAM</text>
+
+        <!-- ── Voltage regulators / capacitors ── -->
+        <polygon points="65,55 85,55 87,75 67,75" fill="#2a2a2a" stroke="#333" stroke-width="0.5" rx="1"/>
+        <polygon points="90,50 108,50 110,65 92,65" fill="#333" stroke="#222" stroke-width="0.5"/>
+        <polygon points="115,45 133,45 135,60 117,60" fill="#2a2a2a" stroke="#333" stroke-width="0.5"/>
+        <!-- Small capacitors dots -->
+        <ellipse cx="75" cy="85" rx="6" ry="5" fill="#1e1e1e" stroke="#2e2e2e" stroke-width="0.5" transform="skewX(-3)"/>
+        <ellipse cx="92" cy="82" rx="5" ry="4" fill="#1e1e1e" stroke="#2e2e2e" stroke-width="0.5" transform="skewX(-3)"/>
+        <ellipse cx="108" cy="78" rx="5" ry="4" fill="#1e1e1e" stroke="#2e2e2e" stroke-width="0.5" transform="skewX(-3)"/>
+
+        <!-- ── Power LED (red) ── -->
+        <circle cx="80" cy="232" r="4" fill="#ff2200" style="animation: ledRed 1.8s ease-in-out infinite"/>
+        <circle cx="80" cy="232" r="6" fill="rgba(255,30,0,0)" style="animation: ledRedGlow 1.8s ease-in-out infinite"/>
+
+        <!-- ── Activity LED (green) ── -->
+        <circle cx="95" cy="232" r="4" class="lp" style="animation-delay:0.2s"/>
+        <circle cx="95" cy="232" r="6" fill="rgba(0,255,60,0)" style="animation: ledGreenGlow 2s ease-in-out infinite; animation-delay:0.2s"/>
+
+        <!-- ── Silkscreen text ── -->
+        <text x="155" y="258" font-family="monospace" font-size="8" fill="rgba(255,255,255,0.18)" transform="skewX(-3)">RASPBERRY PI 4</text>
+
+        <!-- ── Trace lines (PCB traces visible) ── -->
+        <line x1="230" y1="125" x2="245" y2="95" stroke="#0d5a22" stroke-width="1" opacity="0.6"/>
+        <line x1="138" y1="155" x2="100" y2="170" stroke="#0d5a22" stroke-width="1" opacity="0.5"/>
+        <line x1="245" y1="110" x2="280" y2="110" stroke="#0d5a22" stroke-width="0.8" opacity="0.5"/>
+        <line x1="238" y1="155" x2="260" y2="180" stroke="#0d5a22" stroke-width="0.8" opacity="0.4"/>
+
+        <!-- Board right edge (thickness) -->
+        <polygon points="450,270 505,270 505,292 450,292" fill="#145220" stroke="#0d4a1f" stroke-width="0.5" opacity="0.5"/>
+
+      </g><!-- end RPi group -->
+
+      <!-- Sparse stars -->
+      <circle cx="55"  cy="85"  r="0.6" fill="rgba(255,255,255,0.35)"/>
+      <circle cx="130" cy="210" r="0.5" fill="rgba(255,255,255,0.25)"/>
+      <circle cx="820" cy="150" r="0.6" fill="rgba(255,255,255,0.30)"/>
+      <circle cx="880" cy="700" r="0.5" fill="rgba(255,255,255,0.22)"/>
+      <circle cx="40"  cy="800" r="0.5" fill="rgba(255,255,255,0.28)"/>
+      <circle cx="700" cy="900" r="0.6" fill="rgba(255,255,255,0.20)"/>
+    </svg>
+  </div>
+
+  <div class="hero-content">
+    <h1 class="headline">PROJECTS<br>&amp;<br>INTERESTS</h1>
+    <p class="sub">Experiment · Fail · Succeed</p>
+    <a href="#sports" class="cta-btn">Learn More <span class="cta-arrow">→</span></a>
+  </div>
+  <div class="vignette"></div>
+</section>
+
+<!-- ════════════════════════════════════
+     SECTION 4 — SPORTS
+════════════════════════════════════ -->
+<section class="section" id="sports">
+  <div class="stars"></div>
+
+  <!-- Sports scene — left side -->
+  <div class="companies-scene">
+    <svg viewBox="0 0 960 1080" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <!-- Fairway green gradient -->
+        <linearGradient id="fairwayGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#1a4a12"/>
+          <stop offset="100%" stop-color="#0d2e09"/>
+        </linearGradient>
+        <!-- Sky gradient -->
+        <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#000510"/>
+          <stop offset="100%" stop-color="#020b1a"/>
+        </linearGradient>
+        <!-- Golf ball sheen -->
+        <radialGradient id="ballSheen" cx="35%" cy="30%" r="55%">
+          <stop offset="0%" stop-color="#ffffff"/>
+          <stop offset="60%" stop-color="#e0e0e0"/>
+          <stop offset="100%" stop-color="#b0b0b0"/>
+        </radialGradient>
+        <!-- Hole glow -->
+        <radialGradient id="holeGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="rgba(255,220,80,0.4)"/>
+          <stop offset="100%" stop-color="transparent"/>
+        </radialGradient>
+        <!-- Tennis ball -->
+        <radialGradient id="tennisSheen" cx="35%" cy="30%" r="55%">
+          <stop offset="0%" stop-color="#d4ff40"/>
+          <stop offset="100%" stop-color="#8cb800"/>
+        </radialGradient>
+        <!-- Ambient purple/teal glow -->
+        <radialGradient id="sportsAmb" cx="45%" cy="60%" r="50%">
+          <stop offset="0%" stop-color="rgba(0,180,120,0.1)"/>
+          <stop offset="100%" stop-color="transparent"/>
+        </radialGradient>
+      </defs>
+
+      <!-- Ambient glow -->
+      <rect x="0" y="0" width="960" height="1080" fill="url(#sportsAmb)"/>
+
+      <!-- ══ GOLF SCENE — upper half ══ -->
+
+      <!-- Night sky / horizon -->
+      <rect x="0" y="0" width="700" height="560" fill="url(#skyGrad)"/>
+
+      <!-- Stars specific to sports scene -->
+      <circle cx="60"  cy="80"  r="0.7" fill="rgba(255,255,255,0.5)"/>
+      <circle cx="150" cy="45"  r="0.5" fill="rgba(255,255,255,0.4)"/>
+      <circle cx="310" cy="120" r="0.6" fill="rgba(255,255,255,0.35)"/>
+      <circle cx="490" cy="60"  r="0.5" fill="rgba(255,255,255,0.4)"/>
+      <circle cx="600" cy="110" r="0.6" fill="rgba(255,255,255,0.3)"/>
+      <circle cx="30"  cy="200" r="0.5" fill="rgba(255,255,255,0.3)"/>
+      <circle cx="420" cy="170" r="0.4" fill="rgba(255,255,255,0.25)"/>
+
+      <!-- Moon -->
+      <circle cx="580" cy="90" r="38" fill="#f5ecd0" opacity="0.9"/>
+      <circle cx="595" cy="82" r="36" fill="#0a0f1a"/><!-- crescent cutout -->
+      <circle cx="580" cy="90" r="38" fill="none" stroke="rgba(255,240,200,0.3)" stroke-width="2"/>
+
+      <!-- Distant tree line silhouette -->
+      <!-- Ground row of trees -->
+      <path d="M0,460 Q40,400 70,430 Q100,370 130,410 Q160,360 190,400 Q220,345 250,390 Q280,350 310,385 Q340,345 370,380 Q400,340 430,375 Q460,335 490,370 Q520,340 550,368 Q580,345 610,365 Q640,348 670,362 Q700,350 700,365 L700,480 L0,480 Z"
+            fill="#0a2208" opacity="0.95"/>
+
+      <!-- Fairway -->
+      <path d="M0,480 Q180,460 350,470 Q480,478 700,465 L700,700 L0,700 Z" fill="url(#fairwayGrad)"/>
+      <!-- Fairway stripes (mowing lines) -->
+      <path d="M0,490 Q350,478 700,475" fill="none" stroke="rgba(30,80,20,0.5)" stroke-width="8"/>
+      <path d="M0,510 Q350,498 700,495" fill="none" stroke="rgba(40,100,25,0.4)" stroke-width="8"/>
+      <path d="M0,530 Q350,518 700,515" fill="none" stroke="rgba(30,80,20,0.5)" stroke-width="8"/>
+      <path d="M0,550 Q350,538 700,535" fill="none" stroke="rgba(40,100,25,0.4)" stroke-width="8"/>
+      <path d="M0,570 Q350,558 700,555" fill="none" stroke="rgba(30,80,20,0.5)" stroke-width="8"/>
+      <path d="M0,590 Q350,578 700,575" fill="none" stroke="rgba(40,100,25,0.4)" stroke-width="8"/>
+      <path d="M0,610 Q350,598 700,595" fill="none" stroke="rgba(30,80,20,0.5)" stroke-width="8"/>
+      <path d="M0,630 Q350,618 700,615" fill="none" stroke="rgba(40,100,25,0.4)" stroke-width="8"/>
+      <path d="M0,650 Q350,638 700,635" fill="none" stroke="rgba(30,80,20,0.5)" stroke-width="8"/>
+
+      <!-- Sand bunker -->
+      <ellipse cx="480" cy="590" rx="80" ry="28" fill="#c8a850" opacity="0.7"/>
+      <ellipse cx="480" cy="590" rx="76" ry="24" fill="#d4b860" opacity="0.5"/>
+
+      <!-- Putting green (brighter) -->
+      <ellipse cx="220" cy="545" rx="120" ry="55" fill="#22661a" opacity="0.9"/>
+      <ellipse cx="220" cy="545" rx="115" ry="50" fill="#267520" opacity="0.7"/>
+
+      <!-- Hole + flag -->
+      <!-- Hole glow -->
+      <circle cx="220" cy="548" r="22" fill="url(#holeGlow)"/>
+      <!-- Hole -->
+      <ellipse cx="220" cy="548" rx="14" ry="8" fill="#050505"/>
+      <ellipse cx="220" cy="548" rx="14" ry="8" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+      <!-- Flag pole -->
+      <line x1="220" y1="548" x2="220" y2="420" stroke="#d0d0d0" stroke-width="2.5"/>
+      <!-- Flag (red) -->
+      <polygon points="220,420 268,430 220,448" fill="#cc2200" opacity="0.95"/>
+      <polygon points="220,420 268,430 220,448" fill="none" stroke="rgba(255,100,80,0.4)" stroke-width="0.8"/>
+      <!-- Flag number -->
+      <text x="236" y="437" font-family="monospace" font-size="9" font-weight="bold" fill="rgba(255,255,255,0.7)">18</text>
+
+      <!-- Golf ball on green -->
+      <circle cx="265" cy="562" r="12" fill="url(#ballSheen)"/>
+      <!-- Dimple pattern suggestion -->
+      <circle cx="261" cy="558" r="2.5" fill="rgba(0,0,0,0.12)"/>
+      <circle cx="268" cy="556" r="2" fill="rgba(0,0,0,0.10)"/>
+      <circle cx="274" cy="561" r="2.5" fill="rgba(0,0,0,0.12)"/>
+      <circle cx="259" cy="564" r="2" fill="rgba(0,0,0,0.08)"/>
+      <circle cx="267" cy="567" r="2.5" fill="rgba(0,0,0,0.12)"/>
+      <!-- Ball shadow -->
+      <ellipse cx="265" cy="575" rx="10" ry="3" fill="rgba(0,0,0,0.35)"/>
+
+      <!-- Golf bag silhouette (right side, leaning) -->
+      <g transform="translate(120, 490) rotate(-8)">
+        <!-- Bag body -->
+        <rect x="0" y="0" width="32" height="90" rx="10" fill="#1a1a2e" stroke="#252545" stroke-width="1.2"/>
+        <!-- Bag top opening -->
+        <ellipse cx="16" cy="0" rx="16" ry="6" fill="#252545"/>
+        <!-- Club shafts -->
+        <line x1="10" y1="-5" x2="8"  y2="-60" stroke="#888" stroke-width="2"/>
+        <line x1="14" y1="-5" x2="13" y2="-65" stroke="#999" stroke-width="2"/>
+        <line x1="18" y1="-5" x2="19" y2="-62" stroke="#888" stroke-width="2"/>
+        <line x1="22" y1="-5" x2="24" y2="-58" stroke="#777" stroke-width="1.5"/>
+        <!-- Club heads -->
+        <ellipse cx="8"  cy="-62" rx="5" ry="3" fill="#bbb" transform="rotate(-10,8,-62)"/>
+        <ellipse cx="13" cy="-67" rx="5" ry="3" fill="#ccc" transform="rotate(-10,13,-67)"/>
+        <ellipse cx="19" cy="-64" rx="5" ry="3" fill="#bbb" transform="rotate(-10,19,-64)"/>
+        <!-- Bag pocket detail -->
+        <rect x="3" y="30" width="26" height="20" rx="4" fill="#222240" stroke="#2e2e55" stroke-width="0.8"/>
+        <!-- Bag strap -->
+        <path d="M28,10 Q42,50 38,85" fill="none" stroke="#2a2a4a" stroke-width="4" stroke-linecap="round"/>
+      </g>
+
+      <!-- ══ DIVIDER — grass into tennis court ══ -->
+      <rect x="0" y="700" width="700" height="8" fill="#0d2e09"/>
+
+      <!-- ══ TENNIS SCENE — lower half ══ -->
+      <!-- Court surface (hard court blue) -->
+      <rect x="0" y="708" width="700" height="372" fill="#1a3a6e"/>
+
+      <!-- Court lines -->
+      <!-- Outer boundary -->
+      <rect x="30" y="730" width="640" height="330" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2.5"/>
+      <!-- Singles sidelines -->
+      <line x1="90"  y1="730" x2="90"  y2="1060" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+      <line x1="610" y1="730" x2="610" y2="1060" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+      <!-- Center service line -->
+      <line x1="350" y1="730" x2="350" y2="1060" stroke="rgba(255,255,255,0.55)" stroke-width="1.5"/>
+      <!-- Net -->
+      <line x1="30" y1="895" x2="670" y2="895" stroke="rgba(255,255,255,0.85)" stroke-width="3"/>
+      <!-- Net posts -->
+      <rect x="26"  y="882" width="6" height="26" fill="#888"/>
+      <rect x="668" y="882" width="6" height="26" fill="#888"/>
+      <!-- Net center strap -->
+      <rect x="347" y="892" width="6" height="10" fill="#888"/>
+      <!-- Service boxes -->
+      <line x1="90"  y1="812" x2="610" y2="812" stroke="rgba(255,255,255,0.45)" stroke-width="1.2"/>
+      <line x1="90"  y1="978" x2="610" y2="978" stroke="rgba(255,255,255,0.45)" stroke-width="1.2"/>
+      <!-- Baseline center marks -->
+      <line x1="350" y1="730" x2="350" y2="745"  stroke="rgba(255,255,255,0.6)" stroke-width="2"/>
+      <line x1="350" y1="1047" x2="350" y2="1060" stroke="rgba(255,255,255,0.6)" stroke-width="2"/>
+
+      <!-- Tennis ball on court -->
+      <circle cx="350" cy="870" r="14" fill="url(#tennisSheen)"/>
+      <!-- Tennis ball seam curve -->
+      <path d="M338,862 Q350,875 362,862" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/>
+      <path d="M338,878 Q350,865 362,878" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/>
+      <!-- Ball shadow -->
+      <ellipse cx="350" cy="885" rx="12" ry="4" fill="rgba(0,0,0,0.3)"/>
+
+      <!-- Tennis racket (leaning, perspective) -->
+      <g transform="translate(80, 930) rotate(-25)">
+        <!-- Handle -->
+        <rect x="-5" y="60" width="10" height="80" rx="4" fill="#222"/>
+        <rect x="-4" y="64" width="8"  height="70" rx="3" fill="#333"/>
+        <!-- Grip tape lines -->
+        <line x1="-4" y1="70"  x2="4"  y2="70"  stroke="#555" stroke-width="1.5"/>
+        <line x1="-4" y1="80"  x2="4"  y2="80"  stroke="#555" stroke-width="1.5"/>
+        <line x1="-4" y1="90"  x2="4"  y2="90"  stroke="#555" stroke-width="1.5"/>
+        <line x1="-4" y1="100" x2="4"  y2="100" stroke="#555" stroke-width="1.5"/>
+        <line x1="-4" y1="110" x2="4"  y2="110" stroke="#555" stroke-width="1.5"/>
+        <!-- Throat -->
+        <path d="M-5,60 Q-18,30 -22,0 M5,60 Q18,30 22,0" fill="none" stroke="#d0001a" stroke-width="5" stroke-linecap="round"/>
+        <!-- Head frame -->
+        <ellipse cx="0" cy="-40" rx="28" ry="42" fill="none" stroke="#d0001a" stroke-width="6"/>
+        <ellipse cx="0" cy="-40" rx="24" ry="38" fill="none" stroke="#e00020" stroke-width="1"/>
+        <!-- String pattern -->
+        <line x1="-24" y1="-40" x2="24"  y2="-40" stroke="rgba(200,200,200,0.5)" stroke-width="1"/>
+        <line x1="-22" y1="-55" x2="22"  y2="-55" stroke="rgba(200,200,200,0.5)" stroke-width="1"/>
+        <line x1="-18" y1="-68" x2="18"  y2="-68" stroke="rgba(200,200,200,0.5)" stroke-width="1"/>
+        <line x1="-24" y1="-25" x2="24"  y2="-25" stroke="rgba(200,200,200,0.5)" stroke-width="1"/>
+        <line x1="-20" y1="-10" x2="20"  y2="-10" stroke="rgba(200,200,200,0.5)" stroke-width="1"/>
+        <line x1="-14" y1="3"   x2="14"  y2="3"   stroke="rgba(200,200,200,0.5)" stroke-width="1"/>
+        <!-- Vertical strings -->
+        <line x1="-16" y1="-78" x2="-16" y2="-2"  stroke="rgba(200,200,200,0.5)" stroke-width="1"/>
+        <line x1="-8"  y1="-82" x2="-8"  y2="4"   stroke="rgba(200,200,200,0.5)" stroke-width="1"/>
+        <line x1="0"   y1="-82" x2="0"   y2="4"   stroke="rgba(200,200,200,0.5)" stroke-width="1"/>
+        <line x1="8"   y1="-82" x2="8"   y2="4"   stroke="rgba(200,200,200,0.5)" stroke-width="1"/>
+        <line x1="16"  y1="-78" x2="16"  y2="-2"  stroke="rgba(200,200,200,0.5)" stroke-width="1"/>
+      </g>
+
+    </svg>
+  </div>
+
+  <!-- Text content — right side -->
+  <div class="companies-content">
+    <h2 class="headline">SPORTS<br>&amp;<br>LEISURE</h2>
+    <p class="sub">Golf · Tennis · Compete</p>
+    <a href="#sports" class="cta-btn">
+      Explore <span class="cta-arrow">→</span>
+    </a>
+  </div>
+  <div class="vignette"></div>
+</section>
+
+<script>
+/* ── Starfield generator ── */
+function makeStarfield(container) {
+  const canvas = document.createElement('canvas');
+  canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;';
+  container.appendChild(canvas);
+
+  const W = container.offsetWidth  || window.innerWidth;
+  const H = container.offsetHeight || window.innerHeight;
+  canvas.width  = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  const COUNT = 220;
+  for (let i = 0; i < COUNT; i++) {
+    const x    = Math.random() * W;
+    const y    = Math.random() * H;
+    const r    = Math.random() < 0.08 ? Math.random() * 1.4 + 0.8   // bright large
+               : Math.random() < 0.25 ? Math.random() * 0.8 + 0.4   // medium
+               :                        Math.random() * 0.45 + 0.15; // tiny
+    const alpha = Math.random() * 0.55 + 0.2;
+    // Occasional bluish/warm tint
+    const tint = Math.random();
+    const color = tint < 0.12 ? `rgba(180,210,255,${alpha})`
+                : tint < 0.20 ? `rgba(255,230,180,${alpha})`
+                :                `rgba(255,255,255,${alpha})`;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fillStyle = color;
+    ctx.fill();
+
+    // Tiny cross-spike on the brightest stars
+    if (r > 1.1) {
+      ctx.strokeStyle = `rgba(255,255,255,${alpha * 0.35})`;
+      ctx.lineWidth   = 0.5;
+      const spike = r * 4;
+      ctx.beginPath();
+      ctx.moveTo(x - spike, y); ctx.lineTo(x + spike, y);
+      ctx.moveTo(x, y - spike); ctx.lineTo(x, y + spike);
+      ctx.stroke();
+    }
+  }
+}
+
+document.querySelectorAll('.stars').forEach(makeStarfield);
+
+const links   = document.querySelectorAll('.nav-links a');
+const sections = document.querySelectorAll('.section');
+const html    = document.documentElement;
+
+function onScroll() {
+  const scrollY = html.scrollTop || document.body.scrollTop;
+
+  /* Frosted glass after first pixel */
+  navbar.classList.toggle('scrolled', scrollY > 10);
+
+  /* Active link — which section is most visible */
+  let current = '';
+  sections.forEach(sec => {
+    const top = sec.offsetTop;
+    if (scrollY >= top - 80) current = sec.id;
+  });
+  links.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+}
+
+html.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+/* Smooth scroll on click */
+links.forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+</script>
 </body>
 </html>
