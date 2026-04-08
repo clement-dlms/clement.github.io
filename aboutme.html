@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clément Dalmas — About</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --white: #ffffff;
+  --dim:   rgba(255,255,255,0.55);
+  --faint: rgba(255,255,255,0.18);
+  --accent: rgba(100,170,255,0.85);
+  --black: #000000;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: #000;
+  font-family: 'Inter', sans-serif;
+  color: var(--white);
+  overflow-x: hidden;
+}
+
+/* ── NAV (same as main site) ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 64px;
+  background: transparent;
+  transition: background 0.4s ease;
+}
+nav.scrolled {
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.nav-links { display:flex; align-items:center; gap:36px; list-style:none; }
+.nav-links a {
+  font-size: 11px; font-weight:500;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(255,255,255,0.72); text-decoration: none;
+  transition: color .25s;
+  position: relative; padding-bottom: 3px;
+}
+.nav-links a::after {
+  content:''; position:absolute; bottom:0; left:0;
+  width:0; height:1px; background:var(--accent);
+  transition: width .3s ease;
+}
+.nav-links a:hover { color:#fff; }
+.nav-links a:hover::after, .nav-links a.active::after { width:100%; }
+.nav-links a.active { color:#fff; }
+.nav-sep { color:rgba(255,255,255,0.2); font-size:13px; user-select:none; }
+.nav-logo-item { font-weight:700!important; letter-spacing:0.28em!important; font-size:12px!important; color:rgba(255,255,255,0.95)!important; }
+.nav-logo-item::after { display:none!important; }
+
+/* ── Shared ── */
+.headline {
+  font-size: clamp(38px, 5.5vw, 72px);
+  font-weight: 700;
+  line-height: 1.0;
+  letter-spacing: -1.5px;
+  text-transform: uppercase;
+}
+.overline {
+  font-size: 10px; font-weight:500;
+  letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 22px;
+}
+.body-text {
+  font-size: 15px; font-weight:300; line-height:1.75;
+  color: rgba(255,255,255,0.68);
+  max-width: 520px;
+}
+.body-text strong { color:#fff; font-weight:500; }
+
+/* ── HERO ── */
+#hero {
+  position: relative;
+  width:100%; height:100vh;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+  background: #000;
+}
+#hero-canvas {
+  position:absolute; inset:0; width:100%; height:100%;
+}
+.hero-inner {
+  position: relative; z-index:2;
+  text-align: center;
+  padding: 0 24px;
+}
+.hero-inner .headline { font-size: clamp(52px, 8vw, 110px); margin-bottom:28px; }
+.hero-inner .sub {
+  font-size:12px; font-weight:400; letter-spacing:0.26em;
+  text-transform:uppercase; color:rgba(255,255,255,0.38);
+  margin-bottom: 52px;
+}
+.hero-scroll-hint {
+  position:absolute; bottom:38px; left:50%; transform:translateX(-50%);
+  z-index:2; display:flex; flex-direction:column; align-items:center; gap:8px;
+  animation: bounceDown 2s ease-in-out infinite;
+}
+.hero-scroll-hint span { font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.3); }
+.hero-scroll-hint svg { opacity:0.3; }
+@keyframes bounceDown {
+  0%,100%{transform:translateX(-50%) translateY(0);}
+  50%{transform:translateX(-50%) translateY(8px);}
+}
+
+/* ── Divider line ── */
+.divider { width:100%; height:1px; background:rgba(255,255,255,0.07); }
+
+/* ── SECTION base ── */
+.panel {
+  position:relative;
+  width:100%; min-height:100vh;
+  display:flex; align-items:center;
+  overflow:hidden;
+}
+
+/* ── STORY — alternating layout ── */
+.panel-left  .panel-inner { flex-direction: row; }
+.panel-right .panel-inner { flex-direction: row-reverse; }
+
+.panel-inner {
+  display:flex; align-items:center;
+  width:100%; max-width:1200px;
+  margin:0 auto;
+  padding: 120px 64px;
+  gap: 80px;
+}
+
+.panel-visual {
+  flex: 0 0 45%;
+  position:relative;
+}
+.panel-visual svg,
+.panel-visual canvas {
+  width:100%; height:auto; display:block;
+}
+
+.panel-text { flex:1; }
+.panel-text .headline { margin: 16px 0 28px; }
+.panel-number {
+  font-size: 11px; font-weight:500;
+  letter-spacing:0.3em; color:rgba(255,255,255,0.18);
+  margin-bottom:6px;
+}
+
+/* ── VALUES — 3-column grid ── */
+#values {
+  min-height: 0;
+  padding: 140px 64px;
+  background: #000;
+}
+#values .section-header {
+  text-align:center; margin-bottom:80px;
+}
+.values-grid {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:2px; max-width:1100px; margin:0 auto;
+}
+.value-card {
+  background: rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.06);
+  padding: 52px 40px;
+  position:relative; overflow:hidden;
+  transition: background .3s, border-color .3s;
+}
+.value-card:hover {
+  background: rgba(255,255,255,0.055);
+  border-color: rgba(100,170,255,0.2);
+}
+.value-card::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:1px;
+  background: linear-gradient(90deg, transparent, rgba(100,170,255,0.4), transparent);
+  opacity:0; transition:opacity .3s;
+}
+.value-card:hover::before { opacity:1; }
+.value-icon { font-size:28px; margin-bottom:28px; }
+.value-card h3 {
+  font-size:13px; font-weight:600;
+  letter-spacing:0.22em; text-transform:uppercase;
+  margin-bottom:18px; color:#fff;
+}
+.value-card p { font-size:14px; font-weight:300; line-height:1.8; color:rgba(255,255,255,0.58); }
+
+/* ── TIMELINE ── */
+#journey {
+  padding: 140px 64px;
+  background: #000;
+  max-width:900px; margin:0 auto;
+}
+#journey .section-header { margin-bottom:80px; }
+.timeline { position:relative; padding-left:32px; }
+.timeline::before {
+  content:''; position:absolute; left:0; top:0; bottom:0;
+  width:1px; background:rgba(255,255,255,0.1);
+}
+.tl-item {
+  position:relative; padding:0 0 56px 40px;
+}
+.tl-item:last-child { padding-bottom:0; }
+.tl-dot {
+  position:absolute; left:-6px; top:5px;
+  width:13px; height:13px; border-radius:50%;
+  background:#000; border:1px solid rgba(100,170,255,0.6);
+  transition:background .3s;
+}
+.tl-item:hover .tl-dot { background:rgba(100,170,255,0.3); }
+.tl-year {
+  font-size:10px; font-weight:500; letter-spacing:0.22em;
+  text-transform:uppercase; color:var(--accent);
+  margin-bottom:8px;
+}
+.tl-item h4 {
+  font-size:16px; font-weight:600; color:#fff;
+  margin-bottom:10px; letter-spacing:-0.3px;
+}
+.tl-item p {
+  font-size:14px; font-weight:300; line-height:1.75;
+  color:rgba(255,255,255,0.55); max-width:580px;
+}
+
+/* ── OBJECTIVES ── */
+#objectives {
+  min-height:70vh; padding:140px 64px;
+  display:flex; align-items:center; justify-content:center;
+  text-align:center; background:#000;
+}
+.objectives-inner { max-width:760px; }
+.objectives-inner .headline { margin:16px 0 36px; }
+.objectives-inner .body-text {
+  margin:0 auto 52px;
+  font-size:16px; line-height:1.9;
+  text-align:center; max-width:660px;
+}
+.cta-btn {
+  display:inline-flex; align-items:center; gap:10px;
+  font-family:'Inter',sans-serif; font-size:11px;
+  font-weight:600; letter-spacing:0.22em; text-transform:uppercase;
+  color:#fff; background:transparent;
+  border:1px solid rgba(255,255,255,0.35);
+  padding:14px 28px; cursor:pointer; text-decoration:none;
+  transition:border-color .3s, color .3s;
+  position:relative; overflow:hidden;
+}
+.cta-btn::before { content:''; position:absolute; inset:0; background:rgba(255,255,255,0.05); opacity:0; transition:opacity .3s; }
+.cta-btn:hover { border-color:rgba(100,170,255,0.7); color:rgba(140,195,255,1); }
+.cta-btn:hover::before { opacity:1; }
+.cta-arrow { font-size:14px; transition:transform .3s; display:inline-block; }
+.cta-btn:hover .cta-arrow { transform:translateX(5px); }
+
+/* ── FOOTER ── */
+footer {
+  padding:48px 64px;
+  border-top:1px solid rgba(255,255,255,0.07);
+  display:flex; align-items:center; justify-content:space-between;
+}
+footer span { font-size:11px; letter-spacing:0.15em; color:rgba(255,255,255,0.22); text-transform:uppercase; }
+
+/* ── Vignette ── */
+.vignette {
+  position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(0,0,0,0.55) 100%);
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav id="navbar">
+  <ul class="nav-links">
+    <li><a href="index3-5.html" class="nav-logo-item">CLÉMENT D</a></li>
+    <li class="nav-sep">·</li>
+    <li><a href="#hero" class="active">About</a></li>
+    <li><a href="#journey">Journey</a></li>
+    <li><a href="#values">Values</a></li>
+    <li><a href="#objectives">Goals</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════════════════════════════
+     HERO
+══════════════════════════════════ -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="vignette"></div>
+  <div class="hero-inner">
+    <p class="sub">Clément Dalmas · Cybersecurity</p>
+    <h1 class="headline">DRIVEN BY<br>CURIOSITY.</h1>
+  </div>
+  <div class="hero-scroll-hint">
+    <span>Scroll</span>
+    <svg width="16" height="24" viewBox="0 0 16 24" fill="none">
+      <path d="M8 0v20M1 13l7 7 7-7" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════
+     MOTIVATION
+══════════════════════════════════ -->
+<section class="panel panel-left" id="motivation">
+  <div class="panel-inner">
+
+    <!-- Visual: terminal / network SVG -->
+    <div class="panel-visual">
+      <svg viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="termGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(0,200,80,0.12)"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+        </defs>
+        <rect width="480" height="360" fill="url(#termGlow)"/>
+        <!-- Terminal window -->
+        <rect x="20" y="20" width="440" height="320" rx="8" fill="#0a0a0a" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <!-- Title bar -->
+        <rect x="20" y="20" width="440" height="32" rx="8" fill="#111"/>
+        <rect x="20" y="38" width="440" height="14" fill="#111"/>
+        <circle cx="42" cy="36" r="6" fill="#ff5f57"/>
+        <circle cx="62" cy="36" r="6" fill="#febc2e"/>
+        <circle cx="82" cy="36" r="6" fill="#28c840"/>
+        <text x="220" y="40" text-anchor="middle" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.3)">bash — 80×24</text>
+        <!-- Terminal lines -->
+        <text x="36" y="78"  font-family="monospace" font-size="12" fill="#28c840">~$</text>
+        <text x="56" y="78"  font-family="monospace" font-size="12" fill="rgba(255,255,255,0.75)"> whoami</text>
+        <text x="36" y="98"  font-family="monospace" font-size="12" fill="rgba(255,255,255,0.5)">clement_dalmas</text>
+        <text x="36" y="122" font-family="monospace" font-size="12" fill="#28c840">~$</text>
+        <text x="56" y="122" font-family="monospace" font-size="12" fill="rgba(255,255,255,0.75)"> cat motivation.txt</text>
+        <text x="36" y="148" font-family="monospace" font-size="11" fill="rgba(100,200,255,0.8)">/* Origin story */</text>
+        <text x="36" y="168" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.55)">Minecraft server → networking → security</text>
+        <text x="36" y="188" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.55)">Collins Aerospace (intern) → IPI → Airbus</text>
+        <text x="36" y="208" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.55)">YouTube channel: @exebios</text>
+        <text x="36" y="228" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.55)">CTF top 5% — French Ministry of Defence</text>
+        <text x="36" y="252" font-family="monospace" font-size="12" fill="#28c840">~$</text>
+        <text x="56" y="252" font-family="monospace" font-size="12" fill="rgba(255,255,255,0.75)"> _<text fill="rgba(255,255,255,0.75)" style="animation:blink 1s step-end infinite">▌</text></text>
+        <!-- Cursor blink via CSS -->
+        <style>@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}</style>
+        <rect x="56" y="240" width="8" height="14" fill="rgba(255,255,255,0.7)">
+          <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+        </rect>
+      </svg>
+    </div>
+
+    <div class="panel-text">
+      <p class="overline">Origin</p>
+      <p class="panel-number">01</p>
+      <h2 class="headline">WHERE IT<br>ALL BEGAN.</h2>
+      <p class="body-text">
+        It started with a <strong>Minecraft server</strong> — trying to get it online taught me more about networking than any classroom. That curiosity spiralled into studying cyberattacks, watching security content obsessively, and landing a middle-school internship at <strong>Collins Aerospace</strong> where I produced an awareness video on password managers.<br><br>
+        That single experience made the direction clear. I never looked back.
+      </p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════
+     JOURNEY TIMELINE
+══════════════════════════════════ -->
+<div id="journey" style="padding:140px 64px; background:#000; max-width:900px; margin:0 auto;">
+  <div class="section-header">
+    <p class="overline">Experience</p>
+    <h2 class="headline" style="margin-top:12px;">THE PATH.</h2>
+  </div>
+  <div class="timeline">
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <p class="tl-year">2020 — STI2D · SIN Option</p>
+      <h4>First Deep Dive into CS</h4>
+      <p>Chose the Sciences Informatique et Numérique track to go beyond surface-level IT — algorithms, networks, embedded systems.</p>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <p class="tl-year">2022 — Collins Aerospace · Summer Job</p>
+      <h4>IT Assistant</h4>
+      <p>Maintained and audited hardware inventory across the site. First taste of operational IT at scale inside an aerospace environment.</p>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <p class="tl-year">2023 — IPI · Collins Aerospace · Apprenticeship</p>
+      <h4>IT Apprentice — Workstation Deployment</h4>
+      <p>Configured workstations for internal clients, managed day-to-day user support, and handled machine rollouts. Enrolled at IPI in the networking specialisation.</p>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <p class="tl-year">2024–2026 — Airbus Defence &amp; Space</p>
+      <h4>Network &amp; Datacenter Apprentice</h4>
+      <p>Integrated the Datacenter team. Documented network links between machines, maintained rack-level inventory across rooms and buildings, and contributed to infrastructure visibility projects.</p>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <p class="tl-year">Ongoing — @exebios · YouTube</p>
+      <h4>Cybersecurity Content Creator</h4>
+      <p>Running a French-language channel focused on attack techniques, tools, and awareness. Building an audience that learns alongside me.</p>
+    </div>
+
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════
+     VALUES
+══════════════════════════════════ -->
+<section id="values" style="padding:140px 64px; background:#000;">
+  <div class="section-header" style="text-align:center; margin-bottom:80px;">
+    <p class="overline">What drives me</p>
+    <h2 class="headline" style="margin-top:12px;">THREE VALUES.</h2>
+  </div>
+  <div class="values-grid">
+
+    <div class="value-card">
+      <div class="value-icon">◈</div>
+      <h3>Creativity</h3>
+      <p>I rarely follow the template. Finding unconventional routes to solve problems is where I thrive — it makes troubleshooting faster and solutions more resilient. Most of the time I discover I've rediscovered a path professionals already mapped.</p>
+    </div>
+
+    <div class="value-card">
+      <div class="value-icon">◎</div>
+      <h3>Failing Forward</h3>
+      <p>School taught me failure is forbidden. SpaceX taught me it's the engine of progress. I'm actively learning to fail correctly — fast, documented, and without shame. Every crash is a data point.</p>
+    </div>
+
+    <div class="value-card">
+      <div class="value-icon">⊕</div>
+      <h3>Continuous Learning</h3>
+      <p>I consume knowledge across domains — sports, finance, geopolitics, philosophy, engineering. The connections between distant fields are where the best ideas hide. Understanding the world broadly makes me sharper in my field.</p>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════
+     OBJECTIVES
+══════════════════════════════════ -->
+<section id="objectives">
+  <div class="objectives-inner">
+    <p class="overline">Looking ahead</p>
+    <h2 class="headline">THE MISSION.</h2>
+    <p class="body-text">
+      Short term: land a <strong>hands-on cybersecurity role</strong> where I can apply offensive and defensive skills in a real environment.<br><br>
+      Long term: guide organisations toward the <strong>right security posture</strong> — not selling products, but understanding their world and recommending what genuinely protects them.
+    </p>
+    <a href="index3-5.html" class="cta-btn" style="margin-top:52px;">Back to portfolio <span class="cta-arrow">→</span></a>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <span>Clément Dalmas · Cybersecurity</span>
+  <span>© 2026</span>
+</footer>
+
+<script>
+/* ── Starfield hero canvas ── */
+(function(){
+  const canvas = document.getElementById('hero-canvas');
+  const W = canvas.width  = window.innerWidth;
+  const H = canvas.height = window.innerHeight;
+  const ctx = canvas.getContext('2d');
+  for(let i=0;i<350;i++){
+    const x=Math.random()*W, y=Math.random()*H;
+    const r=Math.random()<0.07?Math.random()*1.6+0.9:Math.random()<0.25?Math.random()*0.8+0.4:Math.random()*0.4+0.15;
+    const a=Math.random()*0.6+0.2;
+    const t=Math.random();
+    ctx.beginPath();
+    ctx.arc(x,y,r,0,Math.PI*2);
+    ctx.fillStyle=t<0.12?`rgba(180,210,255,${a})`:t<0.2?`rgba(255,230,180,${a})`:`rgba(255,255,255,${a})`;
+    ctx.fill();
+    if(r>1.2){
+      ctx.strokeStyle=`rgba(255,255,255,${a*0.3})`;
+      ctx.lineWidth=0.5;
+      const sp=r*4.5;
+      ctx.beginPath();
+      ctx.moveTo(x-sp,y);ctx.lineTo(x+sp,y);
+      ctx.moveTo(x,y-sp);ctx.lineTo(x,y+sp);
+      ctx.stroke();
+    }
+  }
+})();
+
+/* ── Navbar scroll ── */
+const nav = document.getElementById('navbar');
+window.addEventListener('scroll',()=>{
+  nav.classList.toggle('scrolled', window.scrollY > 10);
+}, {passive:true});
+
+/* ── Active nav link on scroll ── */
+const sections = ['hero','motivation','journey','values','objectives'];
+const links = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',()=>{
+  let current = '';
+  sections.forEach(id=>{
+    const el=document.getElementById(id);
+    if(el && window.scrollY >= el.offsetTop - 100) current=id;
+  });
+  links.forEach(a=>{
+    const href=a.getAttribute('href').replace('#','');
+    a.classList.toggle('active', href===current);
+  });
+},{passive:true});
+
+/* ── Intersection reveal animation ── */
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting) e.target.style.opacity=1, e.target.style.transform='translateY(0)';
+  });
+},{threshold:0.15});
+document.querySelectorAll('.panel-text, .value-card, .tl-item, .objectives-inner').forEach(el=>{
+  el.style.opacity='0';
+  el.style.transform='translateY(28px)';
+  el.style.transition='opacity 0.75s ease, transform 0.75s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
