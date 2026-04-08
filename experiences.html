@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clément Dalmas — Experience</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --accent: rgba(100,170,255,0.9);
+  --dim:    rgba(255,255,255,0.55);
+  --faint:  rgba(255,255,255,0.12);
+}
+html { scroll-behavior: smooth; }
+body { background:#000; font-family:'Inter',sans-serif; color:#fff; overflow-x:hidden; }
+
+/* ── NAV ── */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:200;
+  display:flex; align-items:center; justify-content:center;
+  height:64px; background:transparent;
+  transition:background .4s ease;
+}
+nav.scrolled { background:rgba(0,0,0,0.65); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); }
+.nav-links { display:flex; align-items:center; gap:36px; list-style:none; }
+.nav-links a {
+  font-size:11px; font-weight:500; letter-spacing:.18em; text-transform:uppercase;
+  color:rgba(255,255,255,.72); text-decoration:none;
+  transition:color .25s; position:relative; padding-bottom:3px;
+}
+.nav-links a::after { content:''; position:absolute; bottom:0; left:0; width:0; height:1px; background:var(--accent); transition:width .3s; }
+.nav-links a:hover, .nav-links a.active { color:#fff; }
+.nav-links a:hover::after, .nav-links a.active::after { width:100%; }
+.nav-sep { color:rgba(255,255,255,.2); font-size:13px; user-select:none; }
+.nav-logo-item { font-weight:700!important; letter-spacing:.28em!important; font-size:12px!important; color:rgba(255,255,255,.95)!important; }
+.nav-logo-item::after { display:none!important; }
+
+/* ══════════════════════════════════
+   HERO — full bleed, cinematic
+══════════════════════════════════ */
+#hero {
+  position:relative; width:100%; height:100vh;
+  display:flex; align-items:flex-end;
+  overflow:hidden;
+}
+#hero canvas { position:absolute; inset:0; width:100%; height:100%; }
+.hero-overlay {
+  position:absolute; inset:0;
+  background:linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.15) 55%, rgba(0,0,0,0.05) 100%);
+}
+.hero-text {
+  position:relative; z-index:2;
+  padding:0 80px 88px;
+}
+.hero-text .overline {
+  font-size:10px; font-weight:500; letter-spacing:.28em; text-transform:uppercase;
+  color:var(--accent); margin-bottom:18px;
+}
+.hero-text h1 {
+  font-size:clamp(52px, 7.5vw, 108px);
+  font-weight:700; line-height:1.0; letter-spacing:-2px;
+  text-transform:uppercase; margin-bottom:28px;
+}
+.hero-text p {
+  font-size:14px; font-weight:300; line-height:1.8;
+  color:rgba(255,255,255,.6); max-width:480px;
+}
+.scroll-hint {
+  position:absolute; bottom:36px; right:80px; z-index:2;
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+  animation:bounce 2s ease-in-out infinite;
+}
+.scroll-hint span { font-size:9px; letter-spacing:.22em; text-transform:uppercase; color:rgba(255,255,255,.3); }
+@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(8px)} }
+
+/* ══════════════════════════════════
+   EXPERIENCE PANELS
+   SpaceX Moon style: alternating
+   left-text / right-visual
+══════════════════════════════════ */
+.xp-panel {
+  position:relative; width:100%; min-height:100vh;
+  display:grid; grid-template-columns:1fr 1fr;
+  overflow:hidden;
+}
+.xp-panel.reverse { direction:rtl; }
+.xp-panel.reverse > * { direction:ltr; }
+
+/* visual side */
+.xp-visual {
+  position:relative; overflow:hidden;
+  background:#050505;
+}
+.xp-visual svg { width:100%; height:100%; position:absolute; inset:0; }
+
+/* text side */
+.xp-text {
+  display:flex; flex-direction:column; justify-content:center;
+  padding:100px 72px;
+  background:#000;
+  border-left:1px solid rgba(255,255,255,.05);
+}
+.xp-panel.reverse .xp-text { border-left:none; border-right:1px solid rgba(255,255,255,.05); }
+
+.xp-index {
+  font-size:10px; font-weight:500; letter-spacing:.3em;
+  color:rgba(255,255,255,.18); margin-bottom:6px;
+}
+.xp-overline {
+  font-size:10px; font-weight:500; letter-spacing:.26em; text-transform:uppercase;
+  color:var(--accent); margin-bottom:20px;
+}
+.xp-title {
+  font-size:clamp(28px,3.2vw,44px); font-weight:700;
+  line-height:1.05; letter-spacing:-1px; text-transform:uppercase;
+  margin-bottom:8px;
+}
+.xp-company {
+  font-size:12px; font-weight:500; letter-spacing:.22em; text-transform:uppercase;
+  color:rgba(255,255,255,.35); margin-bottom:36px;
+}
+.xp-date {
+  display:inline-flex; align-items:center; gap:8px;
+  font-size:10px; letter-spacing:.2em; text-transform:uppercase;
+  color:rgba(255,255,255,.3); margin-bottom:40px;
+  padding:8px 16px; border:1px solid rgba(255,255,255,.08);
+}
+.xp-date::before { content:''; display:block; width:6px; height:6px; border-radius:50%; background:var(--accent); animation:pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+
+/* task list */
+.xp-tasks { list-style:none; display:flex; flex-direction:column; gap:16px; }
+.xp-tasks li {
+  display:flex; gap:16px; align-items:flex-start;
+  font-size:14px; font-weight:300; line-height:1.75; color:rgba(255,255,255,.58);
+  opacity:0; transform:translateY(20px);
+  transition:opacity .6s ease, transform .6s ease;
+}
+.xp-tasks li.visible { opacity:1; transform:translateY(0); }
+.xp-tasks li::before {
+  content:''; flex-shrink:0; display:block;
+  width:4px; height:4px; border-radius:50%;
+  background:var(--accent); margin-top:9px;
+  opacity:.7;
+}
+.xp-tasks strong { color:rgba(255,255,255,.85); font-weight:500; }
+
+/* skill tags */
+.xp-tags { display:flex; flex-wrap:wrap; gap:8px; margin-top:36px; }
+.xp-tag {
+  font-size:9px; font-weight:500; letter-spacing:.18em; text-transform:uppercase;
+  color:rgba(255,255,255,.4); border:1px solid rgba(255,255,255,.1);
+  padding:5px 12px;
+}
+
+/* divider */
+.divider { width:100%; height:1px; background:rgba(255,255,255,.06); }
+
+/* ══════════════════════════════════
+   CTA SECTION
+══════════════════════════════════ */
+#cta {
+  min-height:50vh; display:flex; align-items:center; justify-content:center;
+  text-align:center; padding:120px 64px; background:#000;
+}
+.cta-inner { max-width:640px; }
+.cta-inner h2 {
+  font-size:clamp(32px,5vw,64px); font-weight:700;
+  letter-spacing:-1.5px; text-transform:uppercase; margin:14px 0 32px;
+}
+.cta-inner p { font-size:15px; font-weight:300; line-height:1.8; color:rgba(255,255,255,.55); margin-bottom:48px; }
+.cta-btn {
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:11px; font-weight:600; letter-spacing:.22em; text-transform:uppercase;
+  color:#fff; background:transparent; border:1px solid rgba(255,255,255,.35);
+  padding:14px 28px; text-decoration:none;
+  transition:border-color .3s, color .3s; position:relative; overflow:hidden;
+}
+.cta-btn::before { content:''; position:absolute; inset:0; background:rgba(255,255,255,.05); opacity:0; transition:opacity .3s; }
+.cta-btn:hover { border-color:rgba(100,170,255,.7); color:rgba(140,195,255,1); }
+.cta-btn:hover::before { opacity:1; }
+.cta-arrow { font-size:14px; transition:transform .3s; }
+.cta-btn:hover .cta-arrow { transform:translateX(5px); }
+
+/* footer */
+footer {
+  padding:48px 64px; border-top:1px solid rgba(255,255,255,.07);
+  display:flex; justify-content:space-between; align-items:center;
+}
+footer span { font-size:11px; letter-spacing:.15em; color:rgba(255,255,255,.22); text-transform:uppercase; }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav id="navbar">
+  <ul class="nav-links">
+    <li><a href="index3-5.html" class="nav-logo-item">CLÉMENT D</a></li>
+    <li class="nav-sep">·</li>
+    <li><a href="index3-5.html">Portfolio</a></li>
+    <li><a href="#airbus" class="active">Airbus</a></li>
+    <li><a href="#collins-intern">Collins</a></li>
+    <li><a href="#collins-job">Collins IT</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════════════════════════════
+     HERO
+══════════════════════════════════ -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-overlay"></div>
+  <div class="hero-text">
+    <p class="overline">Professional Experience</p>
+    <h1>BUILT IN<br>THE FIELD.</h1>
+    <p>Three experiences. Two companies. One direction — operational cybersecurity and network infrastructure at the heart of aerospace.</p>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <svg width="14" height="20" viewBox="0 0 14 20" fill="none">
+      <path d="M7 0v16M1 10l6 7 6-7" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+    </svg>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════
+     01 — AIRBUS D&S
+══════════════════════════════════ -->
+<div class="xp-panel" id="airbus">
+
+  <!-- Visual -->
+  <div class="xp-visual">
+    <svg viewBox="0 0 600 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <radialGradient id="airAmb" cx="50%" cy="45%" r="55%">
+          <stop offset="0%" stop-color="rgba(0,80,200,0.18)"/>
+          <stop offset="100%" stop-color="transparent"/>
+        </radialGradient>
+        <linearGradient id="rackG" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#1a1a1a"/>
+          <stop offset="100%" stop-color="#0a0a0a"/>
+        </linearGradient>
+      </defs>
+      <rect width="600" height="900" fill="#030303"/>
+      <rect width="600" height="900" fill="url(#airAmb)"/>
+
+      <!-- Stars -->
+      <circle cx="42"  cy="60"  r=".6" fill="rgba(255,255,255,.35)"/>
+      <circle cx="155" cy="130" r=".5" fill="rgba(255,255,255,.28)"/>
+      <circle cx="310" cy="45"  r=".7" fill="rgba(255,255,255,.40)"/>
+      <circle cx="480" cy="95"  r=".5" fill="rgba(255,255,255,.30)"/>
+      <circle cx="530" cy="220" r=".6" fill="rgba(255,255,255,.25)"/>
+      <circle cx="80"  cy="310" r=".5" fill="rgba(255,255,255,.20)"/>
+      <circle cx="560" cy="380" r=".4" fill="rgba(255,255,255,.22)"/>
+      <circle cx="200" cy="820" r=".5" fill="rgba(255,255,255,.18)"/>
+      <circle cx="450" cy="780" r=".6" fill="rgba(255,255,255,.25)"/>
+
+      <!-- Datacenter floor plan (top-down schematic) -->
+      <!-- Room boundary -->
+      <rect x="60" y="120" width="480" height="620" fill="none" stroke="rgba(0,120,255,0.18)" stroke-width="1.5" rx="4"/>
+      <!-- Room label -->
+      <text x="80" y="115" font-family="monospace" font-size="9" fill="rgba(0,150,255,0.5)" letter-spacing=".15em">SALLE DC-02</text>
+
+      <!-- Cold aisle corridor -->
+      <rect x="120" y="200" width="80" height="460" fill="rgba(0,80,255,0.04)" stroke="rgba(0,100,255,0.1)" stroke-width="1"/>
+      <text x="126" y="435" font-family="monospace" font-size="7" fill="rgba(0,130,255,0.35)" transform="rotate(-90,126,435)" letter-spacing=".1em">COLD AISLE</text>
+
+      <!-- Rack row A -->
+      <g>
+        <text x="220" y="195" font-family="monospace" font-size="8" fill="rgba(255,255,255,.2)" letter-spacing=".12em">ROW A</text>
+        <!-- 7 racks -->
+        <rect x="220" y="200" width="34" height="72" fill="url(#rackG)" stroke="rgba(255,255,255,.12)" stroke-width=".8" rx="1"/>
+        <rect x="258" y="200" width="34" height="72" fill="url(#rackG)" stroke="rgba(255,255,255,.12)" stroke-width=".8" rx="1"/>
+        <rect x="296" y="200" width="34" height="72" fill="url(#rackG)" stroke="rgba(255,255,255,.12)" stroke-width=".8" rx="1"/>
+        <rect x="334" y="200" width="34" height="72" fill="url(#rackG)" stroke="rgba(0,150,255,.25)" stroke-width="1.2" rx="1"/>
+        <rect x="372" y="200" width="34" height="72" fill="url(#rackG)" stroke="rgba(255,255,255,.12)" stroke-width=".8" rx="1"/>
+        <rect x="410" y="200" width="34" height="72" fill="url(#rackG)" stroke="rgba(255,255,255,.12)" stroke-width=".8" rx="1"/>
+        <rect x="448" y="200" width="34" height="72" fill="url(#rackG)" stroke="rgba(255,255,255,.12)" stroke-width=".8" rx="1"/>
+        <!-- Active rack highlight -->
+        <rect x="334" y="200" width="34" height="72" fill="rgba(0,120,255,0.06)"/>
+        <!-- LED dots on highlighted rack -->
+        <circle cx="341" cy="208" r="1.8" fill="#00ff44" opacity=".9"><animate attributeName="opacity" values="1;0.1;1" dur="2s" repeatCount="indefinite"/></circle>
+        <circle cx="347" cy="208" r="1.8" fill="#ffaa00" opacity=".8"><animate attributeName="opacity" values=".8;0.1;.8" dur=".45s" repeatCount="indefinite"/></circle>
+        <circle cx="353" cy="208" r="1.8" fill="#3399ff" opacity=".85"><animate attributeName="opacity" values=".85;.25;.85" dur="2.8s" repeatCount="indefinite"/></circle>
+      </g>
+
+      <!-- Rack row B -->
+      <g>
+        <text x="220" y="310" font-family="monospace" font-size="8" fill="rgba(255,255,255,.2)" letter-spacing=".12em">ROW B</text>
+        <rect x="220" y="318" width="34" height="72" fill="url(#rackG)" stroke="rgba(255,255,255,.12)" stroke-width=".8" rx="1"/>
+        <rect x="258" y="318" width="34" height="72" fill="url(#rackG)" stroke="rgba(0,150,255,.25)" stroke-width="1.2" rx="1"/>
+        <rect x="296" y="318" width="34" height="72" fill="url(#rackG)" stroke="rgba(255,255,255,.12)" stroke-width=".8" rx="1"/>
+        <rect x="334" y="318" width="34" height="72" fill="url(#rackG)" stroke="rgba(255,255,255,.12)" stroke-width=".8" rx="1"/>
+        <rect x="372" y="318" width="34" height="72" fill="url(#rackG)" stroke="rgba(255,255,255,.12)" stroke-width=".8" rx="1"/>
+        <rect x="410" y="318" width="34" height="72" fill="url(#rackG)" stroke="rgba(0,150,255,.25)" stroke-width="1.2" rx="1"/>
+        <rect x="448" y="318" width="34" height="72" fill="url(#rackG)" stroke="rgba(255,255,255,.12)" stroke-width=".8" rx="1"/>
+        <rect x="258" y="318" width="34" height="72" fill="rgba(0,120,255,0.06)"/>
+        <circle cx="265" cy="326" r="1.8" fill="#00ff44" opacity=".9"><animate attributeName="opacity" values="1;0.1;1" dur="1.6s" repeatCount="indefinite" begin=".4s"/></circle>
+        <circle cx="271" cy="326" r="1.8" fill="#ffaa00" opacity=".8"><animate attributeName="opacity" values=".8;0.1;.8" dur=".45s" repeatCount="indefinite" begin=".2s"/></circle>
+        <rect x="410" y="318" width="34" height="72" fill="rgba(0,120,255,0.06)"/>
+        <circle cx="417" cy="326" r="1.8" fill="#3399ff" opacity=".85"><animate attributeName="opacity" values=".85;.25;.85" dur="2.2s" repeatCount="indefinite"/></circle>
+      </g>
+
+      <!-- Rack row C -->
+      <g>
+        <text x="220" y="430" font-family="monospace" font-size="8" fill="rgba(255,255,255,.2)" letter-spacing=".12em">ROW C</text>
+        <rect x="220" y="438" width="34" height="72" fill="url(#rackG)" stroke="rgba(255,255,255,.12)" stroke-width=".8" rx="1"/>
+        <rect x="258" y="438" width="34" height="72" fill="url(#rackG)" stroke="rgba(255,255,255,.12)" stroke-width=".8" rx="1"/>
+        <rect x="296" y="438" width="34" height="72" fill="url(#rackG)" stroke="rgba(0,150,255,.25)" stroke-width="1.2" rx="1"/>
+        <rect x="334" y="438" width="34" height="72" fill="url(#rackG)" stroke="rgba(255,255,255,.12)" stroke-width=".8" rx="1"/>
+        <rect x="372" y="438" width="34" height="72" fill="url(#rackG)" stroke="rgba(255,255,255,.12)" stroke-width=".8" rx="1"/>
+        <rect x="410" y="438" width="34" height="72" fill="url(#rackG)" stroke="rgba(255,255,255,.12)" stroke-width=".8" rx="1"/>
+        <rect x="448" y="438" width="34" height="72" fill="url(#rackG)" stroke="rgba(255,255,255,.12)" stroke-width=".8" rx="1"/>
+        <rect x="296" y="438" width="34" height="72" fill="rgba(0,120,255,0.06)"/>
+        <circle cx="303" cy="446" r="1.8" fill="#00ff44" opacity=".9"><animate attributeName="opacity" values="1;0.1;1" dur="2.4s" repeatCount="indefinite" begin=".8s"/></circle>
+        <circle cx="309" cy="446" r="1.8" fill="#ffaa00" opacity=".8"><animate attributeName="opacity" values=".8;0.1;.8" dur=".45s" repeatCount="indefinite" begin=".1s"/></circle>
+      </g>
+
+      <!-- Network links (connectors between racks) -->
+      <line x1="351" y1="272" x2="275" y2="318" stroke="rgba(0,150,255,0.3)" stroke-width="1" stroke-dasharray="4 3"/>
+      <line x1="351" y1="272" x2="427" y2="318" stroke="rgba(0,150,255,0.2)" stroke-width="1" stroke-dasharray="4 3"/>
+      <line x1="275" y1="390" x2="313" y2="438" stroke="rgba(0,150,255,0.25)" stroke-width="1" stroke-dasharray="4 3"/>
+      <line x1="427" y1="390" x2="371" y2="438" stroke="rgba(0,150,255,0.2)" stroke-width="1" stroke-dasharray="4 3"/>
+
+      <!-- IoT sensor nodes -->
+      <g>
+        <text x="80" y="580" font-family="monospace" font-size="8" fill="rgba(0,200,120,0.5)" letter-spacing=".1em">IoT SENSORS</text>
+        <!-- Sensor 1 -->
+        <circle cx="92"  cy="610" r="8"  fill="none" stroke="rgba(0,200,120,0.4)" stroke-width="1"/>
+        <circle cx="92"  cy="610" r="3"  fill="rgba(0,200,120,0.6)"/>
+        <circle cx="165" cy="620" r="8"  fill="none" stroke="rgba(0,200,120,0.3)" stroke-width="1"/>
+        <circle cx="165" cy="620" r="3"  fill="rgba(0,200,120,0.5)"/>
+        <circle cx="92"  cy="680" r="8"  fill="none" stroke="rgba(0,200,120,0.35)" stroke-width="1"/>
+        <circle cx="92"  cy="680" r="3"  fill="rgba(0,200,120,0.55)"/>
+        <!-- LoRa wave arcs -->
+        <path d="M92,610 Q128,595 165,610" fill="none" stroke="rgba(0,200,120,0.2)" stroke-width="1" stroke-dasharray="3 2"/>
+        <path d="M92,680 Q128,665 165,620" fill="none" stroke="rgba(0,200,120,0.15)" stroke-width="1" stroke-dasharray="3 2"/>
+        <!-- Telemetry labels -->
+        <text x="68"  cy="598" y="598" font-family="monospace" font-size="7" fill="rgba(0,200,120,0.6)">T:22°C</text>
+        <text x="138" y="608" font-family="monospace" font-size="7" fill="rgba(0,200,120,0.5)">H:45%</text>
+        <text x="62"  y="668" font-family="monospace" font-size="7" fill="rgba(0,200,120,0.55)">P:3.2kW</text>
+      </g>
+
+      <!-- DCIM terminal snippet -->
+      <rect x="220" y="570" width="300" height="140" rx="4" fill="rgba(0,0,0,0.7)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+      <rect x="220" y="570" width="300" height="22" rx="4" fill="#111"/>
+      <rect x="220" y="582" width="300" height="10" fill="#111"/>
+      <circle cx="234" cy="581" r="4" fill="#ff5f57"/>
+      <circle cx="248" cy="581" r="4" fill="#febc2e"/>
+      <circle cx="262" cy="581" r="4" fill="#28c840"/>
+      <text x="338" y="584" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(255,255,255,.25)">DCIM console</text>
+      <text x="232" y="608" font-family="monospace" font-size="9" fill="#28c840">$</text>
+      <text x="242" y="608" font-family="monospace" font-size="9" fill="rgba(255,255,255,.6)"> rack --list --room DC-02</text>
+      <text x="232" y="624" font-family="monospace" font-size="8" fill="rgba(0,180,255,.7)">ROW A · 7 racks · 312U used / 378U total</text>
+      <text x="232" y="638" font-family="monospace" font-size="8" fill="rgba(0,180,255,.7)">ROW B · 7 racks · 278U used / 378U total</text>
+      <text x="232" y="652" font-family="monospace" font-size="8" fill="rgba(0,180,255,.7)">ROW C · 7 racks · 196U used / 378U total</text>
+      <text x="232" y="668" font-family="monospace" font-size="8" fill="rgba(255,255,255,.3)">Capacity: 74% · Alerts: 0</text>
+      <rect x="232" y="676" width="8" height="12" fill="rgba(255,255,255,.65)">
+        <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+      </rect>
+
+      <!-- Airbus logo hint (subtle wordmark) -->
+      <text x="300" y="800" text-anchor="middle" font-family="'Inter',sans-serif" font-size="11" font-weight="600" fill="rgba(255,255,255,.08)" letter-spacing=".35em">AIRBUS DEFENCE &amp; SPACE</text>
+    </svg>
+  </div>
+
+  <!-- Text -->
+  <div class="xp-text" id="airbus-text">
+    <p class="xp-index">01</p>
+    <p class="xp-overline">Most Recent</p>
+    <h2 class="xp-title">Datacenter<br>Infrastructure</h2>
+    <p class="xp-company">Airbus Defence &amp; Space · Toulouse</p>
+    <span class="xp-date">Sept 2024 — Sept 2025</span>
+    <ul class="xp-tasks" id="tasks-airbus">
+      <li><span>Mapped the full datacenter infrastructure — from room level down to individual <strong>network links</strong>, producing directly usable data for capacity planning and incident response.</span></li>
+      <li><span>Led the deployment of a <strong>DCIM tool</strong>: gathered requirements, configured the platform, integrated it into existing workflows and presented to the team.</span></li>
+      <li><span>Contributed to integrating <strong>LoRaWAN IoT sensors</strong> for datacenter health telemetry (temperature, humidity, power consumption), strengthening proactive alerting capabilities.</span></li>
+      <li><span>Worked cross-functionally with network, operations, and facility management teams to ensure consistency between physical and logical documentation.</span></li>
+    </ul>
+    <div class="xp-tags">
+      <span class="xp-tag">DCIM</span>
+      <span class="xp-tag">LoRaWAN</span>
+      <span class="xp-tag">IoT</span>
+      <span class="xp-tag">Network Mapping</span>
+      <span class="xp-tag">Infrastructure</span>
+      <span class="xp-tag">Capacity Planning</span>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════
+     02 — COLLINS INTERNSHIP
+══════════════════════════════════ -->
+<div class="xp-panel reverse" id="collins-intern">
+
+  <!-- Visual -->
+  <div class="xp-visual">
+    <svg viewBox="0 0 600 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <radialGradient id="colAmb" cx="50%" cy="45%" r="55%">
+          <stop offset="0%" stop-color="rgba(0,160,255,0.12)"/>
+          <stop offset="100%" stop-color="transparent"/>
+        </radialGradient>
+      </defs>
+      <rect width="600" height="900" fill="#030305"/>
+      <rect width="600" height="900" fill="url(#colAmb)"/>
+
+      <!-- Stars -->
+      <circle cx="80"  cy="80"  r=".6" fill="rgba(255,255,255,.3)"/>
+      <circle cx="200" cy="50"  r=".5" fill="rgba(255,255,255,.25)"/>
+      <circle cx="420" cy="110" r=".6" fill="rgba(255,255,255,.35)"/>
+      <circle cx="540" cy="60"  r=".5" fill="rgba(255,255,255,.22)"/>
+      <circle cx="30"  cy="400" r=".5" fill="rgba(255,255,255,.2)"/>
+      <circle cx="570" cy="750" r=".6" fill="rgba(255,255,255,.22)"/>
+
+      <!-- Network topology diagram -->
+      <!-- Core switch (center) -->
+      <rect x="248" y="210" width="104" height="44" rx="4" fill="#0a1020" stroke="rgba(0,150,255,0.5)" stroke-width="1.5"/>
+      <text x="300" y="230" text-anchor="middle" font-family="monospace" font-size="9" fill="rgba(0,150,255,.9)" letter-spacing=".1em">CORE SW</text>
+      <text x="300" y="244" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(255,255,255,.35)">Cisco Catalyst 9300</text>
+      <!-- Core LED -->
+      <circle cx="340" cy="220" r="2.5" fill="#28c840"><animate attributeName="opacity" values="1;0.2;1" dur="1.8s" repeatCount="indefinite"/></circle>
+
+      <!-- Distribution layer -->
+      <rect x="88"  cy="340" y="340" width="90" height="36" rx="3" fill="#080810" stroke="rgba(0,130,255,0.35)" stroke-width="1"/>
+      <text x="133" y="356" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(0,130,255,.75)">DIST SW-1</text>
+      <text x="133" y="368" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(255,255,255,.3)">Stack</text>
+
+      <rect x="422" y="340" width="90" height="36" rx="3" fill="#080810" stroke="rgba(0,130,255,0.35)" stroke-width="1"/>
+      <text x="467" y="356" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(0,130,255,.75)">DIST SW-2</text>
+      <text x="467" y="368" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(255,255,255,.3)">Stack</text>
+
+      <!-- Links core → dist -->
+      <line x1="248" y1="232" x2="178" y2="340" stroke="rgba(0,150,255,0.4)" stroke-width="1.5"/>
+      <line x1="352" y1="232" x2="422" y2="340" stroke="rgba(0,150,255,0.4)" stroke-width="1.5"/>
+      <!-- Uplink labels -->
+      <text x="196" y="295" font-family="monospace" font-size="7" fill="rgba(0,150,255,.45)" transform="rotate(-40,196,295)">10G Uplink</text>
+      <text x="388" y="293" font-family="monospace" font-size="7" fill="rgba(0,150,255,.45)" transform="rotate(40,388,293)">10G Uplink</text>
+
+      <!-- Access layer -->
+      <rect x="58"  y="460" width="70" height="30" rx="2" fill="#080810" stroke="rgba(255,255,255,.12)" stroke-width=".8"/>
+      <text x="93"  y="479" text-anchor="middle" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.4)">ACCESS-1</text>
+      <rect x="148" y="460" width="70" height="30" rx="2" fill="#080810" stroke="rgba(255,255,255,.12)" stroke-width=".8"/>
+      <text x="183" y="479" text-anchor="middle" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.4)">ACCESS-2</text>
+      <rect x="382" y="460" width="70" height="30" rx="2" fill="#080810" stroke="rgba(255,255,255,.12)" stroke-width=".8"/>
+      <text x="417" y="479" text-anchor="middle" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.4)">ACCESS-3</text>
+      <rect x="472" y="460" width="70" height="30" rx="2" fill="#080810" stroke="rgba(255,255,255,.12)" stroke-width=".8"/>
+      <text x="507" y="479" text-anchor="middle" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.4)">ACCESS-4</text>
+
+      <!-- Links dist → access -->
+      <line x1="133" y1="376" x2="93"  y2="460" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+      <line x1="133" y1="376" x2="183" y2="460" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+      <line x1="467" y1="376" x2="417" y2="460" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+      <line x1="467" y1="376" x2="507" y2="460" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+
+      <!-- WiFi APs -->
+      <g fill="none" stroke="rgba(0,180,255,0.3)" stroke-width="1">
+        <path d="M93,530 Q93,515 108,505 Q93,510 78,505"/>
+        <circle cx="93" cy="535" r="3" fill="rgba(0,180,255,.5)"/>
+        <path d="M507,530 Q507,515 522,505 Q507,510 492,505"/>
+        <circle cx="507" cy="535" r="3" fill="rgba(0,180,255,.5)"/>
+      </g>
+      <text x="75"  y="555" font-family="monospace" font-size="7" fill="rgba(0,180,255,.45)">WiFi AP</text>
+      <text x="490" y="555" font-family="monospace" font-size="7" fill="rgba(0,180,255,.45)">WiFi AP</text>
+
+      <!-- New building highlight -->
+      <rect x="100" y="600" width="400" height="180" rx="4" fill="rgba(0,100,255,0.04)" stroke="rgba(0,100,255,0.2)" stroke-width="1" stroke-dasharray="6 3"/>
+      <text x="300" y="622" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(0,130,255,.5)" letter-spacing=".12em">NOUVEAU BÂTIMENT — DÉPLOIEMENT</text>
+      <!-- Nodes in new building -->
+      <rect x="160" y="640" width="60" height="28" rx="2" fill="#080810" stroke="rgba(0,150,255,.3)" stroke-width="1"/>
+      <text x="190" y="658" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(0,150,255,.7)">SW-NEW-1</text>
+      <rect x="370" y="640" width="60" height="28" rx="2" fill="#080810" stroke="rgba(0,150,255,.3)" stroke-width="1"/>
+      <text x="400" y="658" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(0,150,255,.7)">SW-NEW-2</text>
+      <line x1="190" y1="668" x2="190" y2="700" stroke="rgba(0,150,255,.2)" stroke-width="1" stroke-dasharray="3 2"/>
+      <line x1="400" y1="668" x2="400" y2="700" stroke="rgba(0,150,255,.2)" stroke-width="1" stroke-dasharray="3 2"/>
+      <text x="165" y="714" font-family="monospace" font-size="7" fill="rgba(255,255,255,.2)">WiFi · VoIP</text>
+      <text x="378" y="714" font-family="monospace" font-size="7" fill="rgba(255,255,255,.2)">WiFi · LAN</text>
+
+      <!-- Vulnerability scan widget -->
+      <rect x="140" y="760" width="320" height="100" rx="4" fill="rgba(0,0,0,.75)" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+      <text x="160" y="780" font-family="monospace" font-size="8" fill="rgba(255,200,0,.6)" letter-spacing=".1em">VULN SCAN · PATCH STATUS</text>
+      <rect x="155" y="790" width="180" height="6" rx="2" fill="rgba(255,255,255,.06)"/>
+      <rect x="155" y="790" width="148" height="6" rx="2" fill="rgba(40,200,80,.5)"/>
+      <text x="342" y="797" font-family="monospace" font-size="7" fill="rgba(255,255,255,.35)">82%</text>
+      <rect x="155" y="804" width="180" height="6" rx="2" fill="rgba(255,255,255,.06)"/>
+      <rect x="155" y="804" width="28"  height="6" rx="2" fill="rgba(255,120,0,.5)"/>
+      <text x="342" y="811" font-family="monospace" font-size="7" fill="rgba(255,255,255,.35)">18 CVE</text>
+      <text x="155" y="832" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.3)">245 machines monitored · 18 pending patches</text>
+      <text x="155" y="848" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.25)">Last scan: today 08:42</text>
+
+      <text x="300" y="878" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" font-weight="600" fill="rgba(255,255,255,.06)" letter-spacing=".32em">COLLINS AEROSPACE</text>
+    </svg>
+  </div>
+
+  <!-- Text -->
+  <div class="xp-text">
+    <p class="xp-index">02</p>
+    <p class="xp-overline">Internship</p>
+    <h2 class="xp-title">Networks &amp;<br>IT Security</h2>
+    <p class="xp-company">Collins Aerospace · Toulouse</p>
+    <span class="xp-date">March — July 2024</span>
+    <ul class="xp-tasks" id="tasks-collins-intern">
+      <li><span>Conducted <strong>DT staff interviews</strong> to gather data for upcoming compliance and cybersecurity audits.</span></li>
+      <li><span>Provided user support: iPhone configuration, PC troubleshooting, workstation setup, Office 365 profile management.</span></li>
+      <li><span>Configured <strong>Cisco switches in Stack mode</strong>, deployed a full WiFi and LAN network in a new building.</span></li>
+      <li><span>Monitored <strong>vulnerability exposure</strong> across employee workstations and coordinated patch updates across 245 machines.</span></li>
+    </ul>
+    <div class="xp-tags">
+      <span class="xp-tag">Cisco IOS</span>
+      <span class="xp-tag">Network Deploy</span>
+      <span class="xp-tag">Vuln Management</span>
+      <span class="xp-tag">User Support</span>
+      <span class="xp-tag">Audit Prep</span>
+      <span class="xp-tag">WiFi</span>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════
+     03 — COLLINS STUDENT JOB
+══════════════════════════════════ -->
+<div class="xp-panel" id="collins-job">
+
+  <!-- Visual -->
+  <div class="xp-visual">
+    <svg viewBox="0 0 600 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <radialGradient id="jobAmb" cx="50%" cy="40%" r="50%">
+          <stop offset="0%" stop-color="rgba(120,80,255,0.1)"/>
+          <stop offset="100%" stop-color="transparent"/>
+        </radialGradient>
+      </defs>
+      <rect width="600" height="900" fill="#030305"/>
+      <rect width="600" height="900" fill="url(#jobAmb)"/>
+
+      <!-- Stars -->
+      <circle cx="60"  cy="90"  r=".6" fill="rgba(255,255,255,.3)"/>
+      <circle cx="380" cy="60"  r=".5" fill="rgba(255,255,255,.28)"/>
+      <circle cx="510" cy="180" r=".6" fill="rgba(255,255,255,.22)"/>
+      <circle cx="90"  cy="700" r=".5" fill="rgba(255,255,255,.2)"/>
+      <circle cx="540" cy="820" r=".5" fill="rgba(255,255,255,.18)"/>
+
+      <!-- Inventory spreadsheet / table visual -->
+      <rect x="60" y="100" width="480" height="500" rx="5" fill="rgba(0,0,0,.75)" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+      <!-- Header row -->
+      <rect x="60" y="100" width="480" height="30" rx="5" fill="#0e0e14"/>
+      <rect x="60" y="118" width="480" height="12" fill="#0e0e14"/>
+      <text x="80"  y="120" font-family="monospace" font-size="8.5" fill="rgba(255,255,255,.45)" letter-spacing=".1em">RACK</text>
+      <text x="140" y="120" font-family="monospace" font-size="8.5" fill="rgba(255,255,255,.45)" letter-spacing=".1em">ASSET</text>
+      <text x="270" y="120" font-family="monospace" font-size="8.5" fill="rgba(255,255,255,.45)" letter-spacing=".1em">TYPE</text>
+      <text x="370" y="120" font-family="monospace" font-size="8.5" fill="rgba(255,255,255,.45)" letter-spacing=".1em">PORT</text>
+      <text x="440" y="120" font-family="monospace" font-size="8.5" fill="rgba(255,255,255,.45)" letter-spacing=".1em">STATUS</text>
+
+      <!-- Data rows -->
+      <!-- Row 1 highlight -->
+      <rect x="61" y="131" width="478" height="22" fill="rgba(100,100,255,0.05)"/>
+      <text x="80"  y="146" font-family="monospace" font-size="8" fill="rgba(255,255,255,.55)">A-03</text>
+      <text x="140" y="146" font-family="monospace" font-size="8" fill="rgba(255,255,255,.55)">SRV-ADS-042</text>
+      <text x="270" y="146" font-family="monospace" font-size="8" fill="rgba(0,180,255,.65)">Server</text>
+      <text x="370" y="146" font-family="monospace" font-size="8" fill="rgba(255,255,255,.4)">1G eth0</text>
+      <text x="440" y="146" font-family="monospace" font-size="8" fill="rgba(40,200,80,.7)">● Active</text>
+
+      <text x="80"  y="170" font-family="monospace" font-size="8" fill="rgba(255,255,255,.45)">A-03</text>
+      <text x="140" y="170" font-family="monospace" font-size="8" fill="rgba(255,255,255,.45)">SFP-ADS-017</text>
+      <text x="270" y="170" font-family="monospace" font-size="8" fill="rgba(0,180,100,.55)">SFP Module</text>
+      <text x="370" y="170" font-family="monospace" font-size="8" fill="rgba(255,255,255,.35)">10G SFP+</text>
+      <text x="440" y="170" font-family="monospace" font-size="8" fill="rgba(40,200,80,.65)">● Active</text>
+
+      <text x="80"  y="194" font-family="monospace" font-size="8" fill="rgba(255,255,255,.45)">B-01</text>
+      <text x="140" y="194" font-family="monospace" font-size="8" fill="rgba(255,255,255,.45)">PC-USER-088</text>
+      <text x="270" y="194" font-family="monospace" font-size="8" fill="rgba(255,180,0,.55)">Workstation</text>
+      <text x="370" y="194" font-family="monospace" font-size="8" fill="rgba(255,255,255,.35)">1G eth0</text>
+      <text x="440" y="194" font-family="monospace" font-size="8" fill="rgba(40,200,80,.65)">● Active</text>
+
+      <text x="80"  y="218" font-family="monospace" font-size="8" fill="rgba(255,255,255,.45)">B-02</text>
+      <text x="140" y="218" font-family="monospace" font-size="8" fill="rgba(255,255,255,.45)">SW-L3-004</text>
+      <text x="270" y="218" font-family="monospace" font-size="8" fill="rgba(0,180,255,.55)">L3 Switch</text>
+      <text x="370" y="218" font-family="monospace" font-size="8" fill="rgba(255,255,255,.35)">24x 1G</text>
+      <text x="440" y="218" font-family="monospace" font-size="8" fill="rgba(40,200,80,.65)">● Active</text>
+
+      <text x="80"  y="242" font-family="monospace" font-size="8" fill="rgba(255,255,255,.4)">C-05</text>
+      <text x="140" y="242" font-family="monospace" font-size="8" fill="rgba(255,255,255,.4)">SRV-ADS-031</text>
+      <text x="270" y="242" font-family="monospace" font-size="8" fill="rgba(0,180,255,.5)">Server</text>
+      <text x="370" y="242" font-family="monospace" font-size="8" fill="rgba(255,255,255,.3)">1G eth0</text>
+      <text x="440" y="242" font-family="monospace" font-size="8" fill="rgba(255,120,0,.65)">⚠ Offline</text>
+
+      <text x="80"  y="266" font-family="monospace" font-size="8" fill="rgba(255,255,255,.4)">C-05</text>
+      <text x="140" y="266" font-family="monospace" font-size="8" fill="rgba(255,255,255,.4)">FO-PATCH-22</text>
+      <text x="270" y="266" font-family="monospace" font-size="8" fill="rgba(0,200,180,.5)">Fibre Optique</text>
+      <text x="370" y="266" font-family="monospace" font-size="8" fill="rgba(255,255,255,.3)">LC/LC OS2</text>
+      <text x="440" y="266" font-family="monospace" font-size="8" fill="rgba(40,200,80,.6)">● Active</text>
+
+      <!-- More faint rows -->
+      <line x1="61" y1="276" x2="539" y2="276" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+      <text x="80"  y="291" font-family="monospace" font-size="8" fill="rgba(255,255,255,.22)">D-01</text>
+      <text x="140" y="291" font-family="monospace" font-size="8" fill="rgba(255,255,255,.22)">PC-USER-112</text>
+      <text x="440" y="291" font-family="monospace" font-size="8" fill="rgba(40,200,80,.4)">● Active</text>
+      <text x="80"  y="310" font-family="monospace" font-size="8" fill="rgba(255,255,255,.16)">D-02</text>
+      <text x="140" y="310" font-family="monospace" font-size="8" fill="rgba(255,255,255,.16)">SFP-ADS-034</text>
+      <text x="440" y="310" font-family="monospace" font-size="8" fill="rgba(40,200,80,.3)">● Active</text>
+      <text x="80"  y="329" font-family="monospace" font-size="8" fill="rgba(255,255,255,.1)">D-03</text>
+      <text x="140" y="329" font-family="monospace" font-size="8" fill="rgba(255,255,255,.1)">SW-L3-008</text>
+
+      <!-- Fade-out gradient at bottom of table -->
+      <rect x="61" y="330" width="478" height="260" fill="url(#tableFade)"/>
+      <defs>
+        <linearGradient id="tableFade" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="rgba(3,3,5,0)"/>
+          <stop offset="100%" stop-color="rgba(3,3,5,1)"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Count stats -->
+      <g>
+        <rect x="60" y="630" width="140" height="76" rx="3" fill="rgba(255,255,255,.02)" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+        <text x="130" y="660" text-anchor="middle" font-family="'Inter',sans-serif" font-size="28" font-weight="700" fill="rgba(255,255,255,.7)">48</text>
+        <text x="130" y="678" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(255,255,255,.3)" letter-spacing=".1em">RACKS</text>
+        <text x="130" y="694" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(255,255,255,.2)">documented</text>
+      </g>
+      <g>
+        <rect x="230" y="630" width="140" height="76" rx="3" fill="rgba(255,255,255,.02)" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+        <text x="300" y="660" text-anchor="middle" font-family="'Inter',sans-serif" font-size="28" font-weight="700" fill="rgba(0,180,255,.7)">400+</text>
+        <text x="300" y="678" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(255,255,255,.3)" letter-spacing=".1em">ASSETS</text>
+        <text x="300" y="694" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(255,255,255,.2)">inventoried</text>
+      </g>
+      <g>
+        <rect x="400" y="630" width="140" height="76" rx="3" fill="rgba(255,255,255,.02)" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+        <text x="470" y="660" text-anchor="middle" font-family="'Inter',sans-serif" font-size="28" font-weight="700" fill="rgba(120,80,255,.7)">3</text>
+        <text x="470" y="678" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(255,255,255,.3)" letter-spacing=".1em">TYPES</text>
+        <text x="470" y="694" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(255,255,255,.2)">FO · SFP · Copper</text>
+      </g>
+
+      <!-- L3 switch config snippet -->
+      <rect x="60" y="740" width="480" height="120" rx="4" fill="rgba(0,0,0,.8)" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+      <text x="80" y="762" font-family="monospace" font-size="8" fill="rgba(120,80,255,.7)" letter-spacing=".1em">L3 SWITCH CONFIG (excerpt)</text>
+      <text x="80" y="780" font-family="monospace" font-size="8.5" fill="rgba(255,255,255,.45)">SW-L3-004(config)# <text fill="rgba(0,200,100,.6)">vlan 10</text></text>
+      <text x="80" y="796" font-family="monospace" font-size="8.5" fill="rgba(255,255,255,.35)">SW-L3-004(config-vlan)# <text fill="rgba(0,180,255,.55)">name PRODUCTION</text></text>
+      <text x="80" y="812" font-family="monospace" font-size="8.5" fill="rgba(255,255,255,.35)">SW-L3-004(config)# <text fill="rgba(0,200,100,.55)">ip route 0.0.0.0 0.0.0.0</text></text>
+      <text x="80" y="828" font-family="monospace" font-size="8.5" fill="rgba(255,255,255,.25)">SW-L3-004(config)# <text fill="rgba(0,180,255,.45)">copy run start</text></text>
+      <text x="80" y="848" font-family="monospace" font-size="8" fill="rgba(40,200,80,.5)">Building configuration... [OK]</text>
+
+      <text x="300" y="885" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" font-weight="600" fill="rgba(255,255,255,.06)" letter-spacing=".32em">COLLINS AEROSPACE</text>
+    </svg>
+  </div>
+
+  <!-- Text -->
+  <div class="xp-text">
+    <p class="xp-index">03</p>
+    <p class="xp-overline">Student Job</p>
+    <h2 class="xp-title">IT Assistant<br>&amp; Inventory</h2>
+    <p class="xp-company">Collins Aerospace · Toulouse</p>
+    <span class="xp-date">July 2023</span>
+    <ul class="xp-tasks" id="tasks-collins-job">
+      <li><span>Audited and documented all <strong>network bay assets</strong> — fibre optic, SFP modules, PCs, servers — ensuring the inventory was accurate and up to date.</span></li>
+      <li><span>Provided IT support and helped configure <strong>new user profiles</strong> (intranet, tools, password manager setup) for onboarding employees.</span></li>
+      <li><span>Assisted with the configuration of <strong>Layer 3 switches</strong> — VLANs, routing, and basic hardening.</span></li>
+    </ul>
+    <div class="xp-tags">
+      <span class="xp-tag">Asset Inventory</span>
+      <span class="xp-tag">L3 Switching</span>
+      <span class="xp-tag">VLAN</span>
+      <span class="xp-tag">Fibre Optic</span>
+      <span class="xp-tag">User Onboarding</span>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ── CTA ── -->
+<section id="cta">
+  <div class="cta-inner">
+    <p class="overline" style="font-size:10px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;">What's next</p>
+    <h2>THE MISSION<br>CONTINUES.</h2>
+    <p>From inventory sheets to full datacenter mapping — the trajectory is clear. Cybersecurity is the next frontier.</p>
+    <a href="index.html" class="cta-btn">Back to portfolio <span class="cta-arrow">→</span></a>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <span>Clément Dalmas · Cybersecurity</span>
+  <span>© 2026</span>
+</footer>
+
+<script>
+/* ── Hero starfield ── */
+(function(){
+  const c=document.getElementById('hero-canvas');
+  c.width=window.innerWidth; c.height=window.innerHeight;
+  const ctx=c.getContext('2d');
+  for(let i=0;i<400;i++){
+    const x=Math.random()*c.width, y=Math.random()*c.height;
+    const r=Math.random()<.07?Math.random()*1.8+1:Math.random()<.25?Math.random()*0.9+0.4:Math.random()*.4+.15;
+    const a=Math.random()*.6+.15;
+    const t=Math.random();
+    ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2);
+    ctx.fillStyle=t<.12?`rgba(180,210,255,${a})`:t<.2?`rgba(255,230,180,${a})`:`rgba(255,255,255,${a})`;
+    ctx.fill();
+    if(r>1.2){
+      ctx.strokeStyle=`rgba(255,255,255,${a*.3})`; ctx.lineWidth=.5;
+      const sp=r*4;
+      ctx.beginPath(); ctx.moveTo(x-sp,y); ctx.lineTo(x+sp,y);
+      ctx.moveTo(x,y-sp); ctx.lineTo(x,y+sp); ctx.stroke();
+    }
+  }
+})();
+
+/* ── Navbar scroll ── */
+const nav=document.getElementById('navbar');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>10),{passive:true});
+
+/* ── Task list reveal on scroll ── */
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.querySelectorAll('li').forEach((li,i)=>{
+        setTimeout(()=>li.classList.add('visible'), i*120);
+      });
+    }
+  });
+},{threshold:.2});
+['tasks-airbus','tasks-collins-intern','tasks-collins-job'].forEach(id=>{
+  const el=document.getElementById(id);
+  if(el) observer.observe(el);
+});
+
+/* ── Active nav on scroll ── */
+const sections=['airbus','collins-intern','collins-job'];
+const links=document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  sections.forEach(id=>{
+    const el=document.getElementById(id);
+    if(el && window.scrollY>=el.offsetTop-120) cur=id;
+  });
+  links.forEach(a=>{
+    const h=a.getAttribute('href').replace('#','');
+    a.classList.toggle('active', h===cur);
+  });
+},{passive:true});
+</script>
+</body>
+</html>
