@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clément Dalmas — Sports</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --accent:  rgba(100,170,255,0.9);
+  --green:   rgba(40,180,80,0.85);
+  --gold:    rgba(255,200,60,0.9);
+}
+html { scroll-behavior:smooth; }
+body { background:#000; font-family:'Inter',sans-serif; color:#fff; overflow-x:hidden; }
+
+/* ── NAV ── */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:200;
+  display:flex; align-items:center; justify-content:center;
+  height:64px; background:transparent; transition:background .4s;
+}
+nav.scrolled { background:rgba(0,0,0,0.65); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); }
+.nav-links { display:flex; align-items:center; gap:36px; list-style:none; }
+.nav-links a {
+  font-size:11px; font-weight:500; letter-spacing:.18em; text-transform:uppercase;
+  color:rgba(255,255,255,.72); text-decoration:none;
+  transition:color .25s; position:relative; padding-bottom:3px;
+}
+.nav-links a::after { content:''; position:absolute; bottom:0; left:0; width:0; height:1px; background:var(--accent); transition:width .3s; }
+.nav-links a:hover, .nav-links a.active { color:#fff; }
+.nav-links a:hover::after, .nav-links a.active::after { width:100%; }
+.nav-sep { color:rgba(255,255,255,.2); font-size:13px; user-select:none; }
+.nav-logo-item { font-weight:700!important; letter-spacing:.28em!important; font-size:12px!important; color:rgba(255,255,255,.95)!important; }
+.nav-logo-item::after { display:none!important; }
+
+/* ── HERO ── */
+#hero {
+  position:relative; width:100%; height:100vh;
+  display:flex; align-items:center; justify-content:center; overflow:hidden;
+}
+#hero-canvas { position:absolute; inset:0; width:100%; height:100%; }
+.hero-overlay {
+  position:absolute; inset:0;
+  background:linear-gradient(to top, rgba(0,0,0,.75) 0%, rgba(0,0,0,.1) 60%, transparent 100%);
+}
+.hero-text { position:relative; z-index:2; text-align:center; padding:0 40px; }
+.hero-text .overline { font-size:10px; font-weight:500; letter-spacing:.28em; text-transform:uppercase; color:var(--accent); margin-bottom:18px; }
+.hero-text h1 { font-size:clamp(52px,7.5vw,108px); font-weight:700; line-height:1.0; letter-spacing:-2px; text-transform:uppercase; margin-bottom:28px; }
+.hero-text p { font-size:14px; font-weight:300; line-height:1.8; color:rgba(255,255,255,.58); max-width:500px; margin:0 auto; }
+.scroll-hint {
+  position:absolute; bottom:36px; left:50%; transform:translateX(-50%);
+  z-index:2; display:flex; flex-direction:column; align-items:center; gap:8px;
+  animation:bounce 2s ease-in-out infinite;
+}
+.scroll-hint span { font-size:9px; letter-spacing:.22em; text-transform:uppercase; color:rgba(255,255,255,.3); }
+@keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+
+/* ── DIVIDER ── */
+.divider { width:100%; height:1px; background:rgba(255,255,255,.06); }
+
+/* ── PANELS ── */
+.xp-panel {
+  position:relative; width:100%; min-height:100vh;
+  display:grid; grid-template-columns:1fr 1fr; overflow:hidden;
+}
+.xp-panel.reverse { direction:rtl; }
+.xp-panel.reverse > * { direction:ltr; }
+.xp-visual { position:relative; overflow:hidden; background:#050505; }
+.xp-visual svg { width:100%; height:100%; position:absolute; inset:0; }
+.xp-text {
+  display:flex; flex-direction:column; justify-content:center;
+  padding:100px 72px; background:#000;
+  border-left:1px solid rgba(255,255,255,.05);
+}
+.xp-panel.reverse .xp-text { border-left:none; border-right:1px solid rgba(255,255,255,.05); }
+
+.xp-index { font-size:10px; font-weight:500; letter-spacing:.3em; color:rgba(255,255,255,.18); margin-bottom:6px; }
+.xp-overline { font-size:10px; font-weight:500; letter-spacing:.26em; text-transform:uppercase; color:var(--accent); margin-bottom:20px; }
+.xp-title { font-size:clamp(28px,3.2vw,44px); font-weight:700; line-height:1.05; letter-spacing:-1px; text-transform:uppercase; margin-bottom:32px; }
+.xp-body { font-size:14px; font-weight:300; line-height:1.85; color:rgba(255,255,255,.58); margin-bottom:36px; }
+.xp-body strong { color:rgba(255,255,255,.88); font-weight:500; }
+
+/* stat pills */
+.xp-stats { display:flex; gap:20px; margin-bottom:36px; flex-wrap:wrap; }
+.stat { display:flex; flex-direction:column; gap:4px; padding:16px 22px; border:1px solid rgba(255,255,255,.08); min-width:90px; }
+.stat-val { font-size:22px; font-weight:700; letter-spacing:-0.5px; color:#fff; }
+.stat-lbl { font-size:9px; font-weight:500; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.3); }
+
+/* tags */
+.xp-tags { display:flex; flex-wrap:wrap; gap:8px; }
+.xp-tag { font-size:9px; font-weight:500; letter-spacing:.16em; text-transform:uppercase; color:rgba(255,255,255,.4); border:1px solid rgba(255,255,255,.1); padding:5px 12px; }
+
+/* score table */
+.score-table { width:100%; border-collapse:collapse; margin-bottom:36px; }
+.score-table th { font-size:9px; font-weight:500; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.3); padding:8px 0; border-bottom:1px solid rgba(255,255,255,.08); text-align:left; }
+.score-table td { font-size:13px; font-weight:300; color:rgba(255,255,255,.6); padding:10px 0; border-bottom:1px solid rgba(255,255,255,.04); }
+.score-table td:first-child { font-weight:600; color:rgba(255,255,255,.85); }
+.score-table tr.best td { color:rgba(100,220,120,.85); }
+.score-table tr.best td:first-child { color:rgba(100,220,120,.95); }
+.course-note { font-size:10px; color:rgba(255,255,255,.3); font-style:italic; margin-top:6px; }
+
+/* ── CTA ── */
+#cta { min-height:50vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:120px 64px; }
+.cta-inner { max-width:640px; }
+.cta-inner .overline { font-size:10px; font-weight:500; letter-spacing:.28em; text-transform:uppercase; color:var(--accent); margin-bottom:14px; }
+.cta-inner h2 { font-size:clamp(32px,5vw,64px); font-weight:700; letter-spacing:-1.5px; text-transform:uppercase; margin-bottom:32px; }
+.cta-inner p { font-size:15px; font-weight:300; line-height:1.8; color:rgba(255,255,255,.5); margin-bottom:48px; }
+.cta-btn {
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:11px; font-weight:600; letter-spacing:.22em; text-transform:uppercase;
+  color:#fff; background:transparent; border:1px solid rgba(255,255,255,.35);
+  padding:14px 28px; text-decoration:none;
+  transition:border-color .3s, color .3s; position:relative; overflow:hidden;
+}
+.cta-btn::before { content:''; position:absolute; inset:0; background:rgba(255,255,255,.05); opacity:0; transition:opacity .3s; }
+.cta-btn:hover { border-color:rgba(100,170,255,.7); color:rgba(140,195,255,1); }
+.cta-btn:hover::before { opacity:1; }
+.cta-arrow { font-size:14px; transition:transform .3s; }
+.cta-btn:hover .cta-arrow { transform:translateX(5px); }
+
+footer { padding:48px 64px; border-top:1px solid rgba(255,255,255,.07); display:flex; justify-content:space-between; align-items:center; }
+footer span { font-size:11px; letter-spacing:.15em; color:rgba(255,255,255,.22); text-transform:uppercase; }
+
+.reveal { opacity:0; transform:translateY(24px); transition:opacity .75s ease, transform .75s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav id="navbar">
+  <ul class="nav-links">
+    <li><a href="index.html" class="nav-logo-item">CLÉMENT D</a></li>
+    <li class="nav-sep">·</li>
+    <li><a href="index.html">Portfolio</a></li>
+    <li><a href="#golf"    class="active">Golf</a></li>
+    <li><a href="#tennis">Tennis</a></li>
+    <li><a href="#hiking">Hiking</a></li>
+  </ul>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-overlay"></div>
+  <div class="hero-text">
+    <p class="overline">Sports &amp; Leisure</p>
+    <h1>COMPETE.<br>CLIMB.<br>EXPLORE.</h1>
+    <p>From the fairways of Seilh to the summit of Montcalm — sport has always been another way to push limits.</p>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <svg width="14" height="20" viewBox="0 0 14 20" fill="none">
+      <path d="M7 0v16M1 10l6 7 6-7" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+    </svg>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════
+     01 — GOLF
+══════════════════════════════════ -->
+<div class="xp-panel" id="golf">
+  <div class="xp-visual">
+    <svg viewBox="0 0 600 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <radialGradient id="golfAmb" cx="48%" cy="52%" r="55%">
+          <stop offset="0%" stop-color="rgba(30,100,30,0.18)"/>
+          <stop offset="100%" stop-color="transparent"/>
+        </radialGradient>
+        <linearGradient id="fairwayG" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#0d2e0a"/>
+          <stop offset="100%" stop-color="#061506"/>
+        </linearGradient>
+        <linearGradient id="skyG" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#000508"/>
+          <stop offset="100%" stop-color="#010c14"/>
+        </linearGradient>
+      </defs>
+      <rect width="600" height="900" fill="#030305"/>
+      <rect width="600" height="900" fill="url(#golfAmb)"/>
+
+      <!-- Stars -->
+      <circle cx="55"  cy="55"  r=".6" fill="rgba(255,255,255,.32)"/>
+      <circle cx="200" cy="30"  r=".5" fill="rgba(255,255,255,.25)"/>
+      <circle cx="430" cy="70"  r=".6" fill="rgba(255,255,255,.28)"/>
+      <circle cx="540" cy="38"  r=".5" fill="rgba(255,255,255,.20)"/>
+      <circle cx="80"  cy="160" r=".5" fill="rgba(255,255,255,.18)"/>
+      <circle cx="510" cy="180" r=".4" fill="rgba(255,255,255,.15)"/>
+
+      <!-- Sky -->
+      <rect x="0" y="0" width="600" height="340" fill="url(#skyG)"/>
+
+      <!-- Moon crescent -->
+      <circle cx="500" cy="75" r="30" fill="#f0e8d0" opacity=".85"/>
+      <circle cx="515" cy="68" r="28" fill="#010c14"/>
+
+      <!-- Distant tree silhouette -->
+      <path d="M0,340 Q50,295 90,320 Q130,278 165,308 Q200,268 235,300 Q270,260 305,290 Q340,255 375,285 Q410,248 445,278 Q480,248 510,268 Q545,250 600,262 L600,355 L0,355Z"
+            fill="#061208" opacity=".95"/>
+
+      <!-- Fairway -->
+      <path d="M0,355 Q150,338 300,344 Q450,350 600,338 L600,560 L0,560Z" fill="url(#fairwayG)"/>
+
+      <!-- Mowing stripes -->
+      <path d="M0,366 Q300,356 600,348" fill="none" stroke="rgba(20,60,15,.6)" stroke-width="9"/>
+      <path d="M0,384 Q300,372 600,364" fill="none" stroke="rgba(28,80,20,.5)" stroke-width="9"/>
+      <path d="M0,400 Q300,388 600,380" fill="none" stroke="rgba(20,60,15,.6)" stroke-width="9"/>
+      <path d="M0,416 Q300,404 600,395" fill="none" stroke="rgba(28,80,20,.5)" stroke-width="9"/>
+      <path d="M0,432 Q300,420 600,410" fill="none" stroke="rgba(20,60,15,.6)" stroke-width="9"/>
+      <path d="M0,448 Q300,436 600,425" fill="none" stroke="rgba(28,80,20,.5)" stroke-width="9"/>
+
+      <!-- Putting green -->
+      <ellipse cx="290" cy="400" rx="110" ry="48" fill="#165e12" opacity=".9"/>
+      <ellipse cx="290" cy="400" rx="106" ry="44" fill="#1a7016" opacity=".7"/>
+
+      <!-- Hole & flag -->
+      <circle cx="290" cy="404" r="18" fill="rgba(255,210,60,0.12)"/>
+      <ellipse cx="290" cy="404" rx="11" ry="6.5" fill="#040804"/>
+      <ellipse cx="290" cy="404" rx="11" ry="6.5" fill="none" stroke="rgba(255,255,255,.1)" stroke-width=".8"/>
+      <line x1="290" y1="404" x2="290" y2="285" stroke="#d0d0d0" stroke-width="2"/>
+      <!-- Flag -->
+      <polygon points="290,285 336,295 290,312" fill="#cc2200" opacity=".95"/>
+      <text x="308" y="302" font-family="monospace" font-size="8" font-weight="bold" fill="rgba(255,255,255,.7)">18</text>
+
+      <!-- Golf ball -->
+      <circle cx="328" cy="416" r="10" fill="#f0f0f0"/>
+      <circle cx="325" cy="413" r="2"  fill="rgba(0,0,0,.1)"/>
+      <circle cx="330" cy="411" r="1.5" fill="rgba(0,0,0,.08)"/>
+      <circle cx="334" cy="415" r="2"  fill="rgba(0,0,0,.1)"/>
+      <circle cx="323" cy="418" r="1.5" fill="rgba(0,0,0,.08)"/>
+      <ellipse cx="328" cy="427" rx="8" ry="2.5" fill="rgba(0,0,0,.3)"/>
+
+      <!-- Score chart — bar chart for 5 years -->
+      <rect x="40" y="590" width="520" height="270" rx="4" fill="rgba(0,0,0,.78)" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+      <text x="60" y="614" font-family="monospace" font-size="9" fill="rgba(60,180,60,.65)" letter-spacing=".12em">OPEN DRIVE LECLERC — GOLF DE SEILH</text>
+      <line x1="40" y1="622" x2="560" y2="622" stroke="rgba(255,255,255,.04)"/>
+
+      <!-- Axes -->
+      <line x1="72" y1="638" x2="72" y2="790" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
+      <line x1="72" y1="790" x2="540" y2="790" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
+
+      <!-- Y axis labels (80 → 140) -->
+      <text x="66" y="642" text-anchor="end" font-family="monospace" font-size="7" fill="rgba(255,255,255,.25)">130</text>
+      <text x="66" y="668" text-anchor="end" font-family="monospace" font-size="7" fill="rgba(255,255,255,.2)">120</text>
+      <text x="66" y="695" text-anchor="end" font-family="monospace" font-size="7" fill="rgba(255,255,255,.18)">110</text>
+      <text x="66" y="722" text-anchor="end" font-family="monospace" font-size="7" fill="rgba(255,255,255,.15)">100</text>
+      <text x="66" y="748" text-anchor="end" font-family="monospace" font-size="7" fill="rgba(255,255,255,.12)">90</text>
+
+      <!-- Reference lines -->
+      <line x1="72" y1="642" x2="540" y2="642" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+      <line x1="72" y1="668" x2="540" y2="668" stroke="rgba(255,255,255,.03)" stroke-width="1"/>
+      <line x1="72" y1="695" x2="540" y2="695" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+      <line x1="72" y1="722" x2="540" y2="722" stroke="rgba(255,255,255,.03)" stroke-width="1"/>
+
+      <!-- Bars: map score 103–130 into chart height
+           chart top=642 bottom=790, range 100-135
+           height per unit = (790-642)/(135-100) = 148/35 = 4.23px/pt
+           bar_y = 790 - (score-100)*4.23
+           2014: 120.75 → y=790-(20.75*4.23)=703  h=87
+           2015: 105.25 → y=790-(5.25*4.23)=768   h=22  ← BEST
+           2016: 103.25 → y=790-(3.25*4.23)=776   h=14  ← BEST
+           2017: 124.5  → y=790-(24.5*4.23)=686   h=104
+           2018: 129.75 → y=790-(29.75*4.23)=664  h=126
+      -->
+      <!-- Bar widths 60px, gap 34px, starting x=100 -->
+      <!-- 2014 -->
+      <rect x="100" y="703" width="60" height="87" fill="rgba(60,160,60,.55)" stroke="rgba(80,200,80,.2)" stroke-width="1" rx="2"/>
+      <text x="130" y="699" text-anchor="middle" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.55)">120.75</text>
+      <text x="130" y="804" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(255,255,255,.35)">2014</text>
+      <text x="130" y="813" text-anchor="middle" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,.18)">Yellow</text>
+
+      <!-- 2015 -->
+      <rect x="194" y="768" width="60" height="22" fill="rgba(80,200,80,.7)" stroke="rgba(100,240,100,.3)" stroke-width="1" rx="2"/>
+      <text x="224" y="764" text-anchor="middle" font-family="monospace" font-size="7.5" fill="rgba(100,240,100,.85)">105.25</text>
+      <text x="224" y="804" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(255,255,255,.35)">2015</text>
+      <text x="224" y="813" text-anchor="middle" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,.18)">Yellow</text>
+
+      <!-- 2016 — BEST -->
+      <rect x="288" y="776" width="60" height="14" fill="rgba(100,240,80,.8)" stroke="rgba(120,255,100,.4)" stroke-width="1.2" rx="2"/>
+      <text x="318" y="772" text-anchor="middle" font-family="monospace" font-size="7.5" fill="rgba(140,255,120,.95)">103.25</text>
+      <!-- Best marker -->
+      <text x="318" y="758" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(255,200,60,.9)">★ BEST</text>
+      <text x="318" y="804" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(255,255,255,.35)">2016</text>
+      <text x="318" y="813" text-anchor="middle" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,.18)">Yellow</text>
+
+      <!-- 2017 -->
+      <rect x="382" y="686" width="60" height="104" fill="rgba(60,140,60,.45)" stroke="rgba(80,180,80,.15)" stroke-width="1" rx="2"/>
+      <text x="412" y="682" text-anchor="middle" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.45)">124.5</text>
+      <text x="412" y="804" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(255,255,255,.35)">2017</text>
+      <text x="412" y="813" text-anchor="middle" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,.18)">Red</text>
+
+      <!-- 2018 -->
+      <rect x="476" y="664" width="60" height="126" fill="rgba(60,130,60,.4)" stroke="rgba(80,160,80,.12)" stroke-width="1" rx="2"/>
+      <text x="506" y="660" text-anchor="middle" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.4)">129.75</text>
+      <text x="506" y="804" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(255,255,255,.35)">2018</text>
+      <text x="506" y="813" text-anchor="middle" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,.18)">Red</text>
+
+      <!-- Course change annotation -->
+      <line x1="370" y1="638" x2="370" y2="820" stroke="rgba(255,200,60,.15)" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="371" y="636" font-family="monospace" font-size="6.5" fill="rgba(255,200,60,.4)">→ Red course</text>
+
+      <text x="300" y="870" text-anchor="middle" font-family="'Inter',sans-serif" font-size="9" fill="rgba(255,255,255,.04)" letter-spacing=".28em">GOLF DE SEILH · TOULOUSE</text>
+    </svg>
+  </div>
+
+  <div class="xp-text reveal">
+    <p class="xp-index">01</p>
+    <p class="xp-overline">Golf · Since Middle School</p>
+    <h2 class="xp-title">GOLF DE<br>SEILH</h2>
+    <p class="xp-body">
+      Golf has been part of my life since middle school — one of my longest commitments to any discipline. I joined the <strong>Seilh Golf Training Center</strong> and competed across five editions of the <strong>Open Drive by Leclerc</strong>, an 18-hole competition.<br><br>
+      Best performance in <strong>2016</strong> with a 103.25 average. The 2017–2018 editions were played on the more demanding <strong>Red course</strong> at Seilh, explaining the higher scores.
+    </p>
+
+    <!-- Score table -->
+    <table class="score-table">
+      <thead>
+        <tr>
+          <th>Year</th>
+          <th>Avg Score</th>
+          <th>Course</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>2014</td><td>120.75</td><td>Yellow</td></tr>
+        <tr><td>2015</td><td>105.25</td><td>Yellow</td></tr>
+        <tr class="best"><td>2016 ★</td><td>103.25</td><td>Yellow</td></tr>
+        <tr><td>2017</td><td>124.5</td><td>Red</td></tr>
+        <tr><td>2018</td><td>129.75</td><td>Red</td></tr>
+      </tbody>
+    </table>
+    <p class="course-note">Red course at Seilh is significantly more demanding than the Yellow course.</p>
+
+    <div class="xp-stats" style="margin-top:28px;">
+      <div class="stat"><span class="stat-val">34.0</span><span class="stat-lbl">Handicap</span></div>
+      <div class="stat"><span class="stat-val">5</span><span class="stat-lbl">Competitions</span></div>
+      <div class="stat"><span class="stat-val">103</span><span class="stat-lbl">Best Score</span></div>
+    </div>
+    <div class="xp-tags">
+      <span class="xp-tag">Golf</span>
+      <span class="xp-tag">Seilh</span>
+      <span class="xp-tag">Open Drive Leclerc</span>
+      <span class="xp-tag">18-hole</span>
+      <span class="xp-tag">Competition</span>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════
+     02 — TENNIS
+══════════════════════════════════ -->
+<div class="xp-panel reverse" id="tennis">
+  <div class="xp-visual">
+    <svg viewBox="0 0 600 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <radialGradient id="tenAmb" cx="50%" cy="45%" r="52%">
+          <stop offset="0%" stop-color="rgba(0,100,200,0.12)"/>
+          <stop offset="100%" stop-color="transparent"/>
+        </radialGradient>
+        <radialGradient id="tenBall" cx="35%" cy="32%" r="55%">
+          <stop offset="0%" stop-color="#d4ff40"/>
+          <stop offset="100%" stop-color="#8cb800"/>
+        </radialGradient>
+      </defs>
+      <rect width="600" height="900" fill="#030305"/>
+      <rect width="600" height="900" fill="url(#tenAmb)"/>
+
+      <!-- Stars -->
+      <circle cx="60"  cy="70"  r=".6" fill="rgba(255,255,255,.3)"/>
+      <circle cx="520" cy="55"  r=".5" fill="rgba(255,255,255,.25)"/>
+      <circle cx="280" cy="35"  r=".6" fill="rgba(255,255,255,.28)"/>
+      <circle cx="80"  cy="830" r=".5" fill="rgba(255,255,255,.18)"/>
+
+      <!-- Hard court surface -->
+      <rect x="0" y="80" width="600" height="820" fill="#132848"/>
+
+      <!-- Court outer boundary -->
+      <rect x="30" y="110" width="540" height="740" fill="none" stroke="rgba(255,255,255,.6)" stroke-width="2"/>
+
+      <!-- Singles sidelines -->
+      <line x1="94"  y1="110" x2="94"  y2="850" stroke="rgba(255,255,255,.45)" stroke-width="1.5"/>
+      <line x1="506" y1="110" x2="506" y2="850" stroke="rgba(255,255,255,.45)" stroke-width="1.5"/>
+
+      <!-- Net -->
+      <line x1="30" y1="480" x2="570" y2="480" stroke="rgba(255,255,255,.85)" stroke-width="3"/>
+      <!-- Net posts -->
+      <rect x="26"  y="465" width="6" height="28" fill="#888"/>
+      <rect x="568" y="465" width="6" height="28" fill="#888"/>
+      <!-- Center strap -->
+      <rect x="297" y="476" width="6" height="10" fill="#999"/>
+
+      <!-- Service boxes -->
+      <line x1="94"  y1="294" x2="506" y2="294" stroke="rgba(255,255,255,.4)" stroke-width="1.5"/>
+      <line x1="94"  y1="666" x2="506" y2="666" stroke="rgba(255,255,255,.4)" stroke-width="1.5"/>
+      <line x1="300" y1="110" x2="300" y2="850" stroke="rgba(255,255,255,.38)" stroke-width="1.5"/>
+
+      <!-- Baseline center marks -->
+      <line x1="300" y1="110" x2="300" y2="128" stroke="rgba(255,255,255,.5)" stroke-width="2"/>
+      <line x1="300" y1="832" x2="300" y2="850" stroke="rgba(255,255,255,.5)" stroke-width="2"/>
+
+      <!-- Tennis ball in play (mid-air) -->
+      <circle cx="300" cy="390" r="18" fill="url(#tenBall)"/>
+      <path d="M284,382 Q300,397 316,382" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="2"/>
+      <path d="M284,398 Q300,383 316,398" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="2"/>
+      <!-- Ball motion blur -->
+      <ellipse cx="285" cy="390" rx="14" ry="6" fill="rgba(180,230,0,.08)" transform="rotate(-15,285,390)"/>
+
+      <!-- Ball shadow on court -->
+      <ellipse cx="300" cy="490" rx="14" ry="5" fill="rgba(0,0,0,.35)"/>
+      <!-- Projection line -->
+      <line x1="300" y1="408" x2="300" y2="480" stroke="rgba(255,255,255,.08)" stroke-width="1" stroke-dasharray="3 3"/>
+
+      <!-- Racket silhouette (bottom right) -->
+      <g transform="translate(420,620) rotate(-30)">
+        <rect x="-6" y="55" width="12" height="90" rx="5" fill="#1a1a1a"/>
+        <rect x="-5" y="60" width="10" height="78" rx="4" fill="#242424"/>
+        <line x1="-5" y1="70" x2="5" y2="70" stroke="#333" stroke-width="1.5"/>
+        <line x1="-5" y1="82" x2="5" y2="82" stroke="#333" stroke-width="1.5"/>
+        <line x1="-5" y1="94" x2="5" y2="94" stroke="#333" stroke-width="1.5"/>
+        <line x1="-5" y1="106" x2="5" y2="106" stroke="#333" stroke-width="1.5"/>
+        <path d="M-6,55 Q-22,22 -26,-5 M6,55 Q22,22 26,-5" fill="none" stroke="#cc1a00" stroke-width="5" stroke-linecap="round"/>
+        <ellipse cx="0" cy="-45" rx="30" ry="46" fill="none" stroke="#cc1a00" stroke-width="7"/>
+        <ellipse cx="0" cy="-45" rx="26" ry="42" fill="none" stroke="#dd2200" stroke-width="1"/>
+        <!-- strings -->
+        <line x1="-26" y1="-45" x2="26"  y2="-45" stroke="rgba(200,200,200,.4)" stroke-width="1"/>
+        <line x1="-24" y1="-62" x2="24"  y2="-62" stroke="rgba(200,200,200,.4)" stroke-width="1"/>
+        <line x1="-20" y1="-77" x2="20"  y2="-77" stroke="rgba(200,200,200,.4)" stroke-width="1"/>
+        <line x1="-24" y1="-28" x2="24"  y2="-28" stroke="rgba(200,200,200,.4)" stroke-width="1"/>
+        <line x1="-20" y1="-12" x2="20"  y2="-12" stroke="rgba(200,200,200,.4)" stroke-width="1"/>
+        <line x1="-14" y1="2"   x2="14"  y2="2"   stroke="rgba(200,200,200,.4)" stroke-width="1"/>
+        <line x1="-18" y1="-88" x2="-18" y2="5"   stroke="rgba(200,200,200,.4)" stroke-width="1"/>
+        <line x1="-9"  y1="-90" x2="-9"  y2="6"   stroke="rgba(200,200,200,.4)" stroke-width="1"/>
+        <line x1="0"   y1="-91" x2="0"   y2="6"   stroke="rgba(200,200,200,.4)" stroke-width="1"/>
+        <line x1="9"   y1="-90" x2="9"   y2="6"   stroke="rgba(200,200,200,.4)" stroke-width="1"/>
+        <line x1="18"  y1="-88" x2="18"  y2="5"   stroke="rgba(200,200,200,.4)" stroke-width="1"/>
+      </g>
+
+      <!-- Training camps timeline widget -->
+      <rect x="40" y="720" width="340" height="110" rx="4" fill="rgba(0,0,0,.75)" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+      <text x="58" y="742" font-family="monospace" font-size="8.5" fill="rgba(0,150,255,.65)" letter-spacing=".1em">TRAINING &amp; COMPETITION</text>
+      <line x1="40" y1="750" x2="380" y2="750" stroke="rgba(255,255,255,.04)"/>
+      <text x="58" y="767" font-family="monospace" font-size="8" fill="rgba(255,255,255,.45)">● Multiple training camps</text>
+      <text x="58" y="783" font-family="monospace" font-size="8" fill="rgba(255,255,255,.38)">● Official tournament participation</text>
+      <text x="58" y="799" font-family="monospace" font-size="8" fill="rgba(255,255,255,.28)">● Club competition circuit</text>
+      <text x="58" y="815" font-family="monospace" font-size="7" fill="rgba(255,255,255,.18)">Practice stopped for personal reasons</text>
+
+      <text x="300" y="875" text-anchor="middle" font-family="'Inter',sans-serif" font-size="9" fill="rgba(255,255,255,.04)" letter-spacing=".28em">TENNIS · TOULOUSE</text>
+    </svg>
+  </div>
+
+  <div class="xp-text reveal">
+    <p class="xp-index">02</p>
+    <p class="xp-overline">Tennis</p>
+    <h2 class="xp-title">ON THE<br>COURT.</h2>
+    <p class="xp-body">
+      Took up tennis alongside golf — completed <strong>several training camps</strong> and participated in an <strong>official tournament</strong>. The discipline and focus from golf transferred well to the court.<br><br>
+      Practice came to a stop for personal reasons, the same ones that eventually led me to pause golf as well. The experience stays — the ability to compete, adapt, and recover under pressure doesn't disappear between sports.
+    </p>
+    <div class="xp-stats">
+      <div class="stat"><span class="stat-val">⛾</span><span class="stat-lbl">Training Camps</span></div>
+      <div class="stat"><span class="stat-val">1</span><span class="stat-lbl">Tournament</span></div>
+    </div>
+    <div class="xp-tags">
+      <span class="xp-tag">Tennis</span>
+      <span class="xp-tag">Training Camps</span>
+      <span class="xp-tag">Competition</span>
+      <span class="xp-tag">Racket Sports</span>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════
+     03 — HIKING · MONTCALM
+══════════════════════════════════ -->
+<div class="xp-panel" id="hiking">
+  <div class="xp-visual">
+    <svg viewBox="0 0 600 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <radialGradient id="hikAmb" cx="45%" cy="40%" r="58%">
+          <stop offset="0%" stop-color="rgba(60,80,160,0.18)"/>
+          <stop offset="100%" stop-color="transparent"/>
+        </radialGradient>
+        <linearGradient id="snowG" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="rgba(220,230,255,0.9)"/>
+          <stop offset="100%" stop-color="rgba(160,180,220,0.5)"/>
+        </linearGradient>
+        <linearGradient id="skyHik" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#000510"/>
+          <stop offset="100%" stop-color="#060818"/>
+        </linearGradient>
+        <linearGradient id="rockG" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#383838"/>
+          <stop offset="100%" stop-color="#1a1a1a"/>
+        </linearGradient>
+      </defs>
+      <rect width="600" height="900" fill="#030305"/>
+      <rect width="600" height="900" fill="url(#hikAmb)"/>
+
+      <!-- Milky way hint -->
+      <ellipse cx="300" cy="160" rx="280" ry="80" fill="rgba(120,140,220,0.04)" transform="rotate(-20,300,160)"/>
+
+      <!-- Stars — more dense for mountain night scene -->
+      <circle cx="42"  cy="42"  r=".7" fill="rgba(255,255,255,.55)"/>
+      <circle cx="110" cy="18"  r=".5" fill="rgba(255,255,255,.4)"/>
+      <circle cx="185" cy="60"  r=".6" fill="rgba(255,255,255,.45)"/>
+      <circle cx="265" cy="25"  r=".5" fill="rgba(255,255,255,.38)"/>
+      <circle cx="340" cy="52"  r=".7" fill="rgba(255,255,255,.5)"/>
+      <circle cx="415" cy="20"  r=".5" fill="rgba(255,255,255,.35)"/>
+      <circle cx="490" cy="65"  r=".6" fill="rgba(255,255,255,.42)"/>
+      <circle cx="555" cy="30"  r=".5" fill="rgba(255,255,255,.38)"/>
+      <circle cx="78"  cy="110" r=".5" fill="rgba(255,255,255,.28)"/>
+      <circle cx="222" cy="88"  r=".6" fill="rgba(255,255,255,.35)"/>
+      <circle cx="378" cy="95"  r=".5" fill="rgba(255,255,255,.30)"/>
+      <circle cx="532" cy="105" r=".6" fill="rgba(255,255,255,.32)"/>
+      <circle cx="148" cy="138" r=".4" fill="rgba(255,255,255,.22)"/>
+      <circle cx="460" cy="145" r=".5" fill="rgba(255,255,255,.25)"/>
+      <circle cx="30"  cy="185" r=".5" fill="rgba(255,255,255,.20)"/>
+      <circle cx="570" cy="170" r=".4" fill="rgba(255,255,255,.18)"/>
+      <!-- Blue-tinted stars -->
+      <circle cx="320" cy="78"  r=".6" fill="rgba(180,200,255,.45)"/>
+      <circle cx="165" cy="45"  r=".5" fill="rgba(200,215,255,.38)"/>
+      <circle cx="440" cy="88"  r=".5" fill="rgba(180,200,255,.32)"/>
+
+      <!-- Sky -->
+      <rect x="0" y="0" width="600" height="500" fill="url(#skyHik)"/>
+
+      <!-- Background mountain range -->
+      <path d="M0,460 L80,300 L150,380 L230,250 L310,350 L390,220 L450,320 L510,260 L580,340 L600,300 L600,500 L0,500Z"
+            fill="#0e0e18" opacity=".7"/>
+
+      <!-- Mid mountain silhouette -->
+      <path d="M0,480 L60,380 L120,420 L200,320 L280,395 L340,290 L400,370 L460,310 L520,350 L580,310 L600,330 L600,500 L0,500Z"
+            fill="#0a0a14" opacity=".9"/>
+
+      <!-- Main mountain — Montcalm massif -->
+      <!-- Base rock -->
+      <path d="M0,640 L40,580 L80,600 L130,530 L180,560 L240,490 L300,420 L360,490 L420,460 L470,500 L520,470 L570,510 L600,490 L600,700 L0,700Z"
+            fill="url(#rockG)"/>
+
+      <!-- Snow cap -->
+      <path d="M240,490 L300,420 L360,490 L340,498 L320,485 L300,440 L280,485 L260,498Z"
+            fill="url(#snowG)" opacity=".9"/>
+
+      <!-- Summit marker -->
+      <circle cx="300" cy="420" r="6" fill="rgba(255,200,60,0)" stroke="rgba(255,200,60,.8)" stroke-width="1.5">
+        <animate attributeName="r" values="6;12;6" dur="2.5s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values=".8;0;.8" dur="2.5s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="300" cy="420" r="4" fill="rgba(255,200,60,.9)"/>
+
+      <!-- Summit label -->
+      <line x1="300" y1="416" x2="360" y2="375" stroke="rgba(255,200,60,.4)" stroke-width="1"/>
+      <rect x="358" y="362" width="130" height="30" rx="3" fill="rgba(0,0,0,.75)" stroke="rgba(255,200,60,.25)" stroke-width="1"/>
+      <text x="423" y="375" text-anchor="middle" font-family="monospace" font-size="8.5" font-weight="700" fill="rgba(255,200,60,.9)">MONTCALM</text>
+      <text x="423" y="387" text-anchor="middle" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,.5)">3,010 m · Ariège</text>
+
+      <!-- Elevation profile chart -->
+      <rect x="40" y="730" width="520" height="150" rx="4" fill="rgba(0,0,0,.78)" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+      <text x="60" y="752" font-family="monospace" font-size="9" fill="rgba(100,140,255,.65)" letter-spacing=".12em">ELEVATION PROFILE — 2 DAYS</text>
+      <line x1="40" y1="760" x2="560" y2="760" stroke="rgba(255,255,255,.04)"/>
+
+      <!-- Profile axes -->
+      <line x1="68" y1="768" x2="68" y2="848" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+      <line x1="68" y1="848" x2="535" y2="848" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+
+      <!-- Y labels -->
+      <text x="62" y="772" text-anchor="end" font-family="monospace" font-size="7" fill="rgba(255,255,255,.25)">3000m</text>
+      <text x="62" y="800" text-anchor="end" font-family="monospace" font-size="7" fill="rgba(255,255,255,.18)">2000m</text>
+      <text x="62" y="828" text-anchor="end" font-family="monospace" font-size="7" fill="rgba(255,255,255,.14)">1000m</text>
+
+      <!-- Elevation path — Day 1: base ~1010m up to camp ~2200m, Day2: to summit 3010m then back -->
+      <polyline
+        points="68,845 100,844 130,841 155,836 180,828 205,818 230,808 255,797 268,788"
+        fill="none" stroke="rgba(100,140,255,.55)" stroke-width="2" stroke-linejoin="round"/>
+      <!-- Day 2 -->
+      <polyline
+        points="268,788 290,780 305,770 315,775 325,770 335,773 345,769 355,770"
+        fill="none" stroke="rgba(255,200,60,.7)" stroke-width="2" stroke-linejoin="round"/>
+      <!-- Summit dot -->
+      <circle cx="355" cy="770" r="4" fill="rgba(255,200,60,.9)"/>
+      <!-- Descent -->
+      <polyline
+        points="355,770 370,778 390,788 415,800 440,813 465,828 490,840 520,844 535,845"
+        fill="none" stroke="rgba(100,140,255,.35)" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="5 3"/>
+
+      <!-- Area fill -->
+      <polygon
+        points="68,848 100,844 130,841 155,836 180,828 205,818 230,808 255,797 268,788 290,780 305,770 315,775 325,770 335,773 345,769 355,770 370,778 390,788 415,800 440,813 465,828 490,840 520,844 535,845 535,848"
+        fill="rgba(80,120,220,0.07)"/>
+
+      <!-- Day markers -->
+      <line x1="268" y1="760" x2="268" y2="850" stroke="rgba(255,255,255,.1)" stroke-width="1" stroke-dasharray="3 2"/>
+      <text x="160" y="860" text-anchor="middle" font-family="monospace" font-size="7.5" fill="rgba(100,140,255,.5)">Day 1 · +1000m</text>
+      <text x="405" y="860" text-anchor="middle" font-family="monospace" font-size="7.5" fill="rgba(255,200,60,.5)">Day 2 · +1000m → Summit</text>
+
+      <text x="300" y="895" text-anchor="middle" font-family="'Inter',sans-serif" font-size="9" fill="rgba(255,255,255,.04)" letter-spacing=".28em">MONTCALM · 3010M · ARIÈGE</text>
+    </svg>
+  </div>
+
+  <div class="xp-text reveal">
+    <p class="xp-index">03</p>
+    <p class="xp-overline">Hiking · Pyrenees</p>
+    <h2 class="xp-title">PIC<br>MONTCALM.</h2>
+    <p class="xp-body">
+      Highest peak in Ariège and one of the great summits of the Pyrenees — <strong>3,010 metres</strong>. Reached the top over two days with a total ascent of <strong>+2,000 metres</strong>.<br><br>
+      Day one: climb to high-altitude camp. Day two: summit push at dawn. The kind of effort that has nothing to do with performance metrics and everything to do with <strong>deciding to keep going</strong> when it gets steep.
+    </p>
+    <div class="xp-stats">
+      <div class="stat"><span class="stat-val">3010</span><span class="stat-lbl">metres</span></div>
+      <div class="stat"><span class="stat-val">+2000</span><span class="stat-lbl">Ascent (m)</span></div>
+      <div class="stat"><span class="stat-val">2</span><span class="stat-lbl">Days</span></div>
+    </div>
+    <div class="xp-tags">
+      <span class="xp-tag">Hiking</span>
+      <span class="xp-tag">Pyrenees</span>
+      <span class="xp-tag">Montcalm</span>
+      <span class="xp-tag">High Altitude</span>
+      <span class="xp-tag">Ariège</span>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ── CTA ── -->
+<section id="cta">
+  <div class="cta-inner reveal">
+    <p class="overline">Always moving</p>
+    <h2>NEXT<br>SUMMIT.</h2>
+    <p>Whether it's a fairway, a court, or a ridgeline — the mindset is the same. Find the limit, push it.</p>
+    <a href="index.html" class="cta-btn">Back to portfolio <span class="cta-arrow">→</span></a>
+  </div>
+</section>
+
+<footer>
+  <span>Clément Dalmas · Cybersecurity</span>
+  <span>© 2026</span>
+</footer>
+
+<script>
+/* ── Hero starfield ── */
+(function(){
+  const c=document.getElementById('hero-canvas');
+  c.width=window.innerWidth; c.height=window.innerHeight;
+  const ctx=c.getContext('2d');
+  for(let i=0;i<400;i++){
+    const x=Math.random()*c.width, y=Math.random()*c.height;
+    const r=Math.random()<.07?Math.random()*1.8+1:Math.random()<.25?Math.random()*.9+.4:Math.random()*.4+.15;
+    const a=Math.random()*.6+.15;
+    const t=Math.random();
+    ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2);
+    ctx.fillStyle=t<.12?`rgba(180,210,255,${a})`:t<.2?`rgba(255,230,180,${a})`:`rgba(255,255,255,${a})`;
+    ctx.fill();
+    if(r>1.2){
+      ctx.strokeStyle=`rgba(255,255,255,${a*.3})`; ctx.lineWidth=.5;
+      const sp=r*4.5;
+      ctx.beginPath(); ctx.moveTo(x-sp,y); ctx.lineTo(x+sp,y);
+      ctx.moveTo(x,y-sp); ctx.lineTo(x,y+sp); ctx.stroke();
+    }
+  }
+})();
+
+/* ── Navbar ── */
+const nav=document.getElementById('navbar');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>10),{passive:true});
+
+/* ── Reveal ── */
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+/* ── Active nav ── */
+const ids=['golf','tennis','hiking'];
+const links=document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  ids.forEach(id=>{ const el=document.getElementById(id); if(el&&window.scrollY>=el.offsetTop-120) cur=id; });
+  links.forEach(a=>{ a.classList.toggle('active',a.getAttribute('href')==='#'+cur); });
+},{passive:true});
+</script>
+</body>
+</html>
